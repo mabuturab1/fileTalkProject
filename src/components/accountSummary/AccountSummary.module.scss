@@ -1,0 +1,91 @@
+$border-color: #dddddd;
+$personl-details-color: black;
+$progress-bar-color: #555555;
+.accountSummaryWrapper {
+  width: 100%;
+
+  .accountInfo {
+    border: 1px solid $border-color;
+    border-radius: 10px;
+    text-align: left;
+  }
+  .titleText {
+    font-size: 1rem;
+    color: $personl-details-color;
+    text-align: left;
+    margin-bottom: 1rem;
+  }
+  .personalInfo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    .image {
+      height: 10rem;
+      width: auto;
+    }
+    .personalDetailsWrapper {
+      text-align: center;
+      font-family: "Roboto", "sans-serif";
+      margin-left: 3rem;
+    }
+    .name {
+      color: $personl-details-color;
+      font-size: 1.2rem;
+      font-weight: normal;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      font-family: inherit;
+    }
+    .place {
+      font-family: 0.8rem;
+      color: $personl-details-color;
+      font-weight: normal;
+      font-family: inherit;
+      margin-bottom: 0.2rem;
+      opacity: 0.7;
+    }
+    .date {
+      font-family: 0.8rem;
+      color: $personl-details-color;
+      font-weight: normal;
+      font-family: inherit;
+      opacity: 0.7;
+    }
+  }
+  .buttonGroup {
+    display: flex;
+    flex-flow: column;
+    width: 100%;
+    color: $personl-details-color;
+    .personalInfoButton {
+      border-top: 1px solid $border-color;
+      padding: 0.8rem;
+      text-align: center;
+      width: 100%;
+      color: inherit;
+      cursor: pointer;
+    }
+    .personalInfoButton:hover {
+      text-decoration: underline;
+    }
+    .personalinfobutton:last-child {
+      border-bottom: 1px solid $border-color;
+    }
+  }
+  .storageWrapper {
+    width: 100%;
+    margin-top: 2rem;
+  }
+  .storageDetailsWrapper {
+    border: 1px solid $border-color;
+    border-radius: 10px;
+    padding: 2.5rem 1.5rem;
+  }
+  .singleProgressbar {
+    margin-bottom: 1rem;
+  }
+  .buttonWrapper {
+    margin-top: 4rem;
+  }
+}

@@ -1,0 +1,47 @@
+$text-color: #565656;
+.imageTile {
+  display: flex;
+  justify-content: center;
+}
+.title {
+  font-size: 1rem;
+  color: black;
+  font-weight: bold;
+  font-family: "Roboto", "sans-serif";
+  text-align: left;
+}
+.orderDetailsList {
+  list-style: none;
+}
+.singleItem {
+  display: flex;
+  margin-bottom: 1rem;
+}
+.label {
+  width: 10rem;
+  color: $text-color;
+  text-align: left;
+}
+.value {
+  color: $text-color;
+}
+.bolderText {
+  font-weight: bold;
+}
+
+.bottomMargin {
+  margin-bottom: 1rem;
+}
+.cardSubtitles {
+  margin: 1rem 0;
+  color: $text-color;
+  font-size: 0.7rem;
+}
+.buttonWrapper {
+  margin-top: 4rem;
+}
+.supportedPaymentMethods {
+  width: 100%;
+  justify-content: center;
+  margin-top: 4rem;
+}

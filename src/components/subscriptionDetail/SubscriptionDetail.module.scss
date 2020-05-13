@@ -1,0 +1,71 @@
+$header-background: #708cf1;
+$text-color: #ffffff;
+$border-color: #dddddd;
+$subscription-offers-color: #000000;
+.subscriptionWrapper {
+  width: 100%;
+  height: 100%;
+  font-family: "Montserrat", sans-serif;
+  border: 1px solid $border-color;
+  .header {
+    background-color: $header-background;
+    border-radius: 10px 10px 0px 0px;
+    height: 40%;
+    min-height: 7rem;
+    color: $text-color;
+    font-family: inherit;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-flow: column;
+    padding: 1rem;
+  }
+
+  .mainText {
+    font-size: 2.5rem;
+    font-family: inherit;
+    padding: 5px;
+    margin: 0;
+  }
+  .subscript {
+    font-size: 1rem;
+    line-height: 1.2rem;
+    font-family: inherit;
+  }
+  .mediumText {
+    font-size: 1.5rem;
+    line-height: 1.7rem;
+    font-family: inherit;
+    padding: 5px;
+    margin: 0;
+  }
+  .smallText {
+    font-size: 1rem;
+    line-height: 1.2rem;
+    font-family: "Roboto", sans-serif;
+    font-weight: normal;
+    padding: 5px;
+    margin: 0;
+  }
+  .subscriptionOffers {
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+    height: 60%;
+    min-height: 10rem;
+    padding: 3rem;
+  }
+  .offersList {
+    list-style: none;
+    text-align: left;
+  }
+  .singleOffer {
+    text-align: left;
+    font-size: 0.8rem;
+    color: $subscription-offers-color;
+  }
+  .buttonWrapper {
+    margin-top: 7rem;
+  }
+}

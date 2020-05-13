@@ -1,0 +1,35 @@
+.wrapper {
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
+  position: relative;
+}
+.tabs .ui.secondary.pointing.menu {
+  display: flex;
+  justify-content: center;
+}
+.tabs .ui.secondary.pointing.menu .item {
+  border-bottom-width: 5px;
+}
+.tabs .ui.secondary.pointing.menu .active.item {
+  border-color: #aaaaaa;
+}
+.tabs .ui.secondary.pointing.menu .active.item:hover {
+  border-color: #aaaaaa;
+}
+.tabs .ui.segment {
+  box-shadow: none;
+  border: none;
+}
+.tabsWrapper {
+  width: 70%;
+  margin: 0 auto;
+  max-width: 50rem;
+  min-width: 30rem;
+}
+.invoiceButton {
+  position: absolute;
+  top: 5rem;
+  right: 2rem;
+  width: 8rem;
+}
