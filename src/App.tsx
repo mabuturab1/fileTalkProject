@@ -7,6 +7,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import OrderSubscriptionPage from "./containers/orderSubscriptionPage/OrderSubscriptionPage";
 import InvoicePage from "./containers/invoicePage/InvoicePage";
 import { routes } from "./interfaces/routes";
+import SettingsPage from "./containers/settingsPage/SettingsPage";
 
 function App() {
   return (
@@ -14,6 +15,8 @@ function App() {
       <Router>
         <Switch>
           <Route path={routes.fileTalkMainPage} component={FileTalk} />
+          <Route path={routes.settingsPage} component={SettingsPage} />
+
           <Route
             path={routes.orderSubscriptionPage}
             component={OrderSubscriptionPage}

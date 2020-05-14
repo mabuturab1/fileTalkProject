@@ -1,8 +1,8 @@
 export const routes = {
   mainPage: "/",
-  welcomePage: "/home",
+  welcomePage: "/",
   roomListPage: "/rooms",
-  subscriptionPage: "/subscription",
+
   accountPage: "/account",
   fileTalkMainPage: "/fileTalk",
   orderSubscriptionPage: "/order-subscription",
@@ -11,4 +11,9 @@ export const routes = {
   uploadDetails: "/fileTalk/upload-details",
   fileView: "/fileTalk/file-view`",
   searchResultsPage: "/fileTalk/search`",
+  settingsPage: "/",
+  profilePage: "/profile",
+  storagePage: "/storage",
+  subscriptionPage: "/subscription",
+  billingPage: "/billing",
 };
