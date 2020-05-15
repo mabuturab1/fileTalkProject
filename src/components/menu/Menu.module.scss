@@ -19,6 +19,9 @@
       cursor: pointer;
       color: inherit;
     }
+    .singleItem:hover {
+      font-weight: bold;
+    }
     .active {
       font-weight: bold;
       color: inherit;

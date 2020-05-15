@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./AccountSummary.module.scss";
 import ProgressBar from "../progressBar/ProgressBar";
 import Button from "../input/button/Button";
 import { Link } from "react-router-dom";
 import { routes } from "../../interfaces/routes";
+import Modal from "../modal/Modal";
+import EditProfile from "../editProfile/EditProfile";
 interface AccountSummaryProps {
   src: string;
   userName?: string;
@@ -15,8 +17,20 @@ interface AccountSummaryProps {
   roomUsageLabel?: string;
 }
 const AccountSummary = (props: AccountSummaryProps) => {
+  const [showEditPhoto, setEditPhoto] = useState(false);
+  const handleChange = (event: string) => {
+    if (event === "edit profile") {
+      setEditPhoto(true);
+      console.log("set edit photo");
+    }
+  };
   return (
     <div className={styles.accountSummaryWrapper}>
+      {showEditPhoto ? (
+        <Modal zIndex={10001}>
+          <EditProfile />
+        </Modal>
+      ) : null}
       <div className={styles.userWrapper}>
         <h6 className={styles.titleText}>Profile</h6>
         <div className={styles.accountInfo}>
@@ -29,7 +43,12 @@ const AccountSummary = (props: AccountSummaryProps) => {
             </div>
           </div>
           <div className={styles.buttonGroup}>
-            <p className={styles.personalInfoButton}>Edit Profile</p>
+            <p
+              onClick={() => handleChange("edit profile")}
+              className={styles.personalInfoButton}
+            >
+              Edit Profile
+            </p>
             <p className={styles.personalInfoButton}>Change Photo</p>
             <p className={styles.personalInfoButton}>Logout</p>
           </div>

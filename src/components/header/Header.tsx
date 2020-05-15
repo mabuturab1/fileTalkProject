@@ -12,11 +12,13 @@ interface HeaderProps {
 const myheader = (props: HeaderProps) => {
   return (
     <div className={styles.headerWrapper}>
-      <div className={styles.logoName}>
-        <h6 className={styles.logo}>
-          {props.companyName != null ? props.companyName : ""}
-        </h6>
-      </div>
+      <Link to={routes.mainPage}>
+        <div className={styles.logoName}>
+          <h6 className={styles.logo}>
+            {props.companyName != null ? props.companyName : ""}
+          </h6>
+        </div>
+      </Link>
       <div className={styles.userDetails}>
         <Link to={routes.subscriptionPage}>
           <div className={styles.upgradeButton}>

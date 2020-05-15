@@ -20,55 +20,61 @@ const HomePage = (props: any) => {
   const [modalOpen, setModalOpen] = useState(false);
   const menuItemClicked = (item: string) => {
     setInputState(item);
+    console.log("item clicked is", item);
+    if (item === "Settings") setModalOpen(true);
   };
   let location = useLocation();
   if (location.pathname.replace("/", "") !== inputState)
     menuItemClicked(location.pathname.replace("/", ""));
-
+  const onModalClose = () => {
+    setModalOpen(false);
+  };
   return (
-    <div className={styles.wrapper}>
-      <div className={styles.header}>
-        <Header
-          companyName={"Filetalk"}
-          profileImage={userImage}
-          userName={"Francisco Alexander"}
-        />
-      </div>
-      <div className={styles.content}>
-        {/* <div className={styles.menu}> */}
-        <div className={styles.menuList}>
-          <Menu
-            activeItem={inputState}
-            items={["Rooms", "Settings"]}
-            toLink={[routes.roomListPage, routes.mainPage]}
-            itemClicked={menuItemClicked}
+    <React.Fragment>
+      {modalOpen ? <SettingsPage onClose={onModalClose} /> : null}
+
+      <div className={styles.wrapper}>
+        <div className={styles.header}>
+          <Header
+            companyName={"Filetalk"}
+            profileImage={userImage}
+            userName={"Francisco Alexander"}
           />
         </div>
+        <div className={styles.content}>
+          {/* <div className={styles.menu}> */}
+          <div className={styles.menuList}>
+            <Menu
+              activeItem={modalOpen ? "Settings" : inputState}
+              items={["Rooms", "Settings"]}
+              toLink={[routes.roomListPage, routes.mainPage]}
+              itemClicked={menuItemClicked}
+            />
+          </div>
 
-        <div className={styles.pageWrapper}>
-          <Switch>
-            <Route path={routes.welcomePage}>
-              <Welcome
-                titleText={"Start Filetalk"}
-                captionLink={"Start with new file talk"}
-              />
-            </Route>
-
-            <Route path={routes.roomListPage}>
-              <RoomListPage />
-            </Route>
-            <Route path={routes.subscriptionPage}>
-              <SubscriptionPage />
-            </Route>
-            <Route path={routes.accountPage}>
-              <AccountPage />
-            </Route>
-
-            <Redirect from="/" to={routes.welcomePage} />
-          </Switch>
+          <div className={styles.pageWrapper}>
+            <Switch>
+              <Route path={routes.roomListPage}>
+                <RoomListPage />
+              </Route>
+              <Route path={routes.subscriptionPage}>
+                <SubscriptionPage />
+              </Route>
+              <Route path={routes.accountPage}>
+                <AccountPage />
+              </Route>
+              <Route path={routes.welcomePage}>
+                <Welcome
+                  titleText={"Start Filetalk"}
+                  captionLink={"Start with new file talk"}
+                />
+              </Route>
+              <Redirect from="/" to={routes.welcomePage} />
+            </Switch>
+          </div>
         </div>
       </div>
-    </div>
+    </React.Fragment>
   );
 };
 export default HomePage;

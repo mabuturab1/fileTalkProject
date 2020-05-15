@@ -1,4 +1,5 @@
 $border-color: #dddddd;
+$menu-width: 15%;
 .wrapper {
   width: 100%;
   height: 100%;
@@ -13,7 +14,7 @@ $border-color: #dddddd;
 
   .header {
     width: 100%;
-    height: 4rem;
+    height: 2rem;
     border-bottom: 1px solid $border-color;
   }
   .content {
@@ -23,7 +24,7 @@ $border-color: #dddddd;
     display: flex;
     overflow: hidden;
     .menu {
-      width: 20%;
+      width: $menu-width;
     }
     .menuList {
       position: absolute;
@@ -32,10 +33,10 @@ $border-color: #dddddd;
     }
   }
   .pageWrapper {
-    width: 80%;
+    width: calc(100% - #{$menu-width});
     height: 100%;
     overflow: auto;
-    margin-left: 20%;
+    margin-left: $menu-width;
     padding: 5% 13%;
     display: flex;
     justify-content: center;
@@ -47,7 +48,7 @@ $border-color: #dddddd;
     .content {
       .menuList {
         position: relative;
-        width: 20%;
+        width: $menu-width;
       }
     }
   }

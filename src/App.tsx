@@ -15,7 +15,6 @@ function App() {
       <Router>
         <Switch>
           <Route path={routes.fileTalkMainPage} component={FileTalk} />
-          <Route path={routes.settingsPage} component={SettingsPage} />
 
           <Route
             path={routes.orderSubscriptionPage}

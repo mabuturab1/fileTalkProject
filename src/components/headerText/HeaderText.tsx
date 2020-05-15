@@ -8,7 +8,7 @@ const settingsPageHeader = (props: HeaderTextProps) => {
   return (
     <div className={styles.headerWrapper}>
       <p className={styles.titleText}>{props.titleText}</p>
-      <span className={styles.close}></span>
+      <span onClick={props.onCancel} className={styles.close}></span>
     </div>
   );
 };

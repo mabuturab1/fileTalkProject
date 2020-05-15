@@ -10,19 +10,32 @@ import StorageSummary from "../../components/storageSummary/StorageSummary";
 import SubscriptionPage from "../subscriptionPage/SubscriptionPage";
 import Modal from "../../components/modal/Modal";
 import BillingPage from "../billingPage/BillingPage";
-const SettingsPage = (props: any) => {
+interface SettingsPageProps {
+  onClose: () => any;
+}
+const SettingsPage = (props: SettingsPageProps) => {
   const [menuItem, setMenuItem] = useState("Profile");
   const menuItemClicked = (item: string) => {
     setMenuItem(item);
   };
-  let location = useLocation();
-  if (location.pathname.replace(routes.settingsPage, "") !== menuItem)
-    menuItemClicked(location.pathname.replace(routes.settingsPage, ""));
+
+  const getPage = (pageName: string) => {
+    switch (pageName) {
+      case "Profile":
+        return <AccountSummary src={profileImage} />;
+      case "Storage":
+        return <StorageSummary />;
+      case "Subscription":
+        return <SubscriptionPage />;
+      case "Billing":
+        return <BillingPage />;
+    }
+  };
   return (
     <Modal>
       <div className={styles.wrapper}>
         <div className={styles.header}>
-          <HeaderText titleText={menuItem} />
+          <HeaderText onCancel={props.onClose} titleText={menuItem} />
         </div>
         <div className={styles.content}>
           <div className={styles.menuList}>
@@ -30,34 +43,16 @@ const SettingsPage = (props: any) => {
               activeItem={menuItem}
               items={["Profile", "Storage", "Subscription", "Billing"]}
               toLink={[
-                routes.profilePage,
-                routes.storagePage,
-                routes.subscriptionPage,
-                routes.billingPage,
+                routes.mainPage,
+                routes.mainPage,
+                routes.mainPage,
+                routes.mainPage,
               ]}
               itemClicked={menuItemClicked}
             />
           </div>
 
-          <div className={styles.pageWrapper}>
-            <Switch>
-              <Route path={routes.profilePage}>
-                <AccountSummary src={profileImage} />
-              </Route>
-
-              <Route path={routes.storagePage}>
-                <StorageSummary />
-              </Route>
-              <Route path={routes.subscriptionPage}>
-                <SubscriptionPage />
-              </Route>
-              <Route path={routes.billingPage}>
-                <BillingPage />
-              </Route>
-
-              <Redirect from={routes.settingsPage} to={routes.profilePage} />
-            </Switch>
-          </div>
+          <div className={styles.pageWrapper}>{getPage(menuItem)}</div>
         </div>
       </div>
     </Modal>
