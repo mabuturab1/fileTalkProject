@@ -10,8 +10,8 @@ export interface RoomItemProps {
   userList: string[];
 }
 export interface SubscriptionItem {
-  header?: HeaderItem[];
-  offers?: string[];
+  header: HeaderItem[];
+  offers: string[];
 }
 export enum SubscrptionTextSize {
   SMALL,

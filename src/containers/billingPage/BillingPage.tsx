@@ -3,12 +3,14 @@ import styles from "./BillingPage.module.scss";
 import BillingInformation from "../forms/billingInformation/BillingInformation";
 import CurrentPaymentMethod from "../../components/currentPaymentMethod/CurrentPaymentMethod";
 import visaPayment from "../../assets/images/Visa.png";
-
-const billingPage = (props: any) => {
+interface BillingPageProps {
+  onClose?: () => any;
+}
+const billingPage = (props: BillingPageProps) => {
   return (
     <div className={styles.billingPageWraper}>
       <div className={styles.billingFormWrapper}>
-        <BillingInformation />
+        <BillingInformation onClose={props.onClose} />
       </div>
       <div className={styles.topMargin}>
         <CurrentPaymentMethod

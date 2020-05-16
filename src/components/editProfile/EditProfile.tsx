@@ -2,76 +2,152 @@ import React, { useState } from "react";
 import styles from "./EditProfile.module.scss";
 import HeaderText from "../headerText/HeaderText";
 import InputFormField from "../input/formField/FormField";
+import { withFormik, FormikBag } from "formik";
+import { Form } from "semantic-ui-react";
+import * as Yup from "yup";
+import Button from "../input/button/Button";
 import {
   getElementData,
   FormField,
 } from "../../containers/forms/billingInformation/utils";
-const EditProfile = (props: any) => {
-  const [formState, setFormState] = useState<{
-    [key: string]: FormField | boolean;
-  }>({
-    valid: false,
-    firstName: getElementData(
-      "First name",
-      "First Name",
-      "Enter your first name",
-      { required: true },
-      null,
-      "Alexander"
-    ),
-    lastName: getElementData(
-      "Last name",
-      "Last name",
-      "Enter your last name",
-      { required: true },
-      null,
-      "Fransisco"
-    ),
-    password: getElementData(
-      "Password",
-      "Password",
-      "Enter your password",
-      { required: true },
-      null,
-      ""
-    ),
-    confirmPassword: getElementData(
-      "Confirm password",
-      "Confirm password",
-      "Kindly re-renter password",
-      { required: true },
-      null,
-      ""
-    ),
-  });
+interface EditProfileProps {
+  onCancel: () => any;
+  onSave?: () => {
+    firstName: string;
+    lastName: string;
+    password: string;
+    confirmPassword: string;
+  };
+}
+const EditProfile = ({
+  values,
+  touched,
+  errors,
+  handleChange,
+  isSubmitting,
+  handleBlur,
+  handleSubmit,
+}: any) => {
+  const formData = {
+    firstName: {
+      label: "First Name",
+      placeholder: "Please enter first name",
+    },
+    lastName: {
+      label: "Last Name",
+      placeholder: "Please enter last name",
+    },
+    password: {
+      label: "Password",
+      placeholder: "Please enter password",
+    },
+    confirmPassword: {
+      label: "Confirm Password",
+      placeholder: "Kindly confirm password",
+    },
+  };
+  const onSave = (event: any, data: any) => {
+    // props.onSave()
+    values.onCancel();
+  };
   return (
     <div className={styles.wrapper}>
-      <HeaderText titleText={"Edit Profile"} />
+      <div className={styles.bottomBorder}>
+        <HeaderText
+          textColor={"#263238"}
+          onCancel={values.onCancel}
+          titleText={"Edit Profile"}
+        />
+      </div>
       <div className={styles.formData}>
-        <div className={styles.name}>
-          <InputFormField
-            hasError={(formState.firstName as FormField).errors != null}
-            elementConfig={(formState.firstName as FormField).elementConfig}
-          />
-          <InputFormField
-            hasError={(formState.lastName as FormField).errors != null}
-            elementConfig={(formState.lastName as FormField).elementConfig}
-          />
-        </div>
-        <div className={styles.password}>
-          <InputFormField
-            hasError={(formState.password as FormField).errors != null}
-            elementConfig={(formState.password as FormField).elementConfig}
-          />
-          <InputFormField
-            hasError={(formState.confirmPassword as FormField).errors != null}
-            elementConfig={
-              (formState.confirmPassword as FormField).elementConfig
-            }
-          />
-        </div>
+        <Form>
+          <div className={[styles.name, styles.bottomBorder].join(" ")}>
+            <div className={styles.singleFieldWrapper}>
+              <InputFormField
+                error={errors.firstName}
+                elementConfig={formData.firstName}
+                handleChange={handleChange}
+                name={"firstName"}
+                value={values.firstName}
+                touched={touched.firstName}
+              />
+            </div>
+            <div className={styles.singleFieldWrapper}>
+              <InputFormField
+                error={errors.lastName}
+                elementConfig={formData.lastName}
+                handleChange={handleChange}
+                name={"lastName"}
+                value={values.lastName}
+                touched={touched.lastName}
+              />
+            </div>
+          </div>
+          <div className={[styles.password, styles.bottomBorder].join(" ")}>
+            <div className={styles.singleFieldWrapper}>
+              <InputFormField
+                error={errors.password}
+                elementConfig={formData.password}
+                handleChange={handleChange}
+                name={"password"}
+                value={values.password}
+                touched={touched.password}
+              />
+            </div>
+            <div className={styles.singleFieldWrapper}>
+              <InputFormField
+                error={errors.confirmPassword}
+                elementConfig={formData.confirmPassword}
+                handleChange={handleChange}
+                name={"confirmPassword"}
+                value={values.confirmPassword}
+                touched={touched.confirmPassword}
+              />
+            </div>
+          </div>
+          <div className={styles.buttonWrapper}>
+            <Button
+              disabled={isSubmitting}
+              onClick={handleSubmit}
+              label={"Save Changes"}
+            />
+          </div>
+        </Form>
       </div>
     </div>
   );
 };
-export default EditProfile;
+const FormikEditProfile = withFormik({
+  mapPropsToValues(props: any) {
+    return {
+      firstName: props.firstName || "",
+      lastName: props.lastName || "",
+      password: "",
+      confirmPassword: "",
+      onCancel: props.onCancel || null,
+    };
+  },
+  handleSubmit(values: any, { setErrors, setSubmitting }) {
+    console.log(values);
+    if (values.password != values.confirmPassword)
+      setErrors({
+        confirmPassword: "Password does not match",
+      });
+    else
+      setTimeout(() => {
+        setSubmitting(false);
+        values.onCancel();
+      }, 2000);
+  },
+  validationSchema: Yup.object().shape({
+    firstName: Yup.string().required("First name is required"),
+    lastName: Yup.string().required("Last name is required"),
+    password: Yup.string()
+      .min(9, "Password must be at least 9 characters")
+      .required("Password is required"),
+    confirmPassword: Yup.string()
+      .min(9, "Password must be at least 9 characters")
+      .required("Password is required"),
+  }),
+})(EditProfile);
+export default FormikEditProfile;

@@ -2,6 +2,7 @@ import React from "react";
 import { Button, Icon } from "semantic-ui-react";
 
 interface ButtonProps {
+  disabled?: boolean;
   label?: string;
   padding?: string[];
   width?: string;
@@ -9,12 +10,14 @@ interface ButtonProps {
   type?: string;
   icon?: any;
   color?: string;
+  onClick?: (event: any, data: any) => any;
 }
 const button = (props: ButtonProps) => {
   let style: { [key: string]: any } = {
     textAlign: "center",
   };
   let label = "";
+
   if (props.label != null) label = props.label;
   if (props.padding != null && props.padding.length > 1) {
     style = {
@@ -87,7 +90,12 @@ const button = (props: ButtonProps) => {
     );
   else
     return (
-      <Button style={style} primary>
+      <Button
+        disabled={props.disabled}
+        onClick={props.onClick}
+        style={style}
+        primary
+      >
         {label}
       </Button>
     );

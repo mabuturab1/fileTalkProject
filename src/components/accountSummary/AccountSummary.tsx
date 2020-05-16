@@ -4,7 +4,8 @@ import ProgressBar from "../progressBar/ProgressBar";
 import Button from "../input/button/Button";
 import { Link } from "react-router-dom";
 import { routes } from "../../interfaces/routes";
-import Modal from "../modal/Modal";
+// import Modal from "../modal/Modal";
+import { Modal } from "semantic-ui-react";
 import EditProfile from "../editProfile/EditProfile";
 interface AccountSummaryProps {
   src: string;
@@ -15,6 +16,7 @@ interface AccountSummaryProps {
   storageUsageLabel?: string;
   roomUsage?: number;
   roomUsageLabel?: string;
+  onClose?: () => any;
 }
 const AccountSummary = (props: AccountSummaryProps) => {
   const [showEditPhoto, setEditPhoto] = useState(false);
@@ -27,8 +29,16 @@ const AccountSummary = (props: AccountSummaryProps) => {
   return (
     <div className={styles.accountSummaryWrapper}>
       {showEditPhoto ? (
-        <Modal zIndex={10001}>
-          <EditProfile />
+        <Modal
+          open={true}
+          basic
+          size="small"
+          style={{ backgroundColor: "white" }}
+          centered={true}
+        >
+          <Modal.Content>
+            <EditProfile onCancel={() => setEditPhoto(false)} />
+          </Modal.Content>
         </Modal>
       ) : null}
       <div className={styles.userWrapper}>

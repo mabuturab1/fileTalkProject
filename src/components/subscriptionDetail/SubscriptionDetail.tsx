@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import styles from "./SubscriptionDetail.module.scss";
 import {
   SubscriptionItem,
@@ -6,10 +6,15 @@ import {
 } from "../../interfaces/interfaceList";
 import { Icon } from "semantic-ui-react";
 import Button from "../input/button/Button";
+import SubscriptionContext, {
+  CurrentPackage,
+} from "../../context/subscriptionContext";
 interface SupscriptionDetailsProps {
   item?: SubscriptionItem;
+  value: CurrentPackage;
 }
 const subscription = (props: SupscriptionDetailsProps) => {
+  const subscriptionContext = useContext(SubscriptionContext);
   const headerItems: any[] = [];
   if (props.item != null && props.item.header != null) {
     for (let i = 0; i < props.item.header.length; i++) {
@@ -46,7 +51,11 @@ const subscription = (props: SupscriptionDetailsProps) => {
       <div className={styles.subscriptionOffers}>
         <ul className={styles.offersList}>{subscriptionOffers}</ul>
         <div className={styles.buttonWrapper}>
-          <Button label={"Subscribed"} />
+          {subscriptionContext.defaultPackage == props.value ? (
+            <Button label={"Subscribe Now"} />
+          ) : (
+            <Button label={"Change Plan"} />
+          )}
         </div>
       </div>
     </div>

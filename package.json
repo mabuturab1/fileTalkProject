@@ -15,7 +15,8 @@
     "react-scripts": "3.4.1",
     "reactjs-popup": "^1.5.0",
     "semantic-ui-react": "^0.88.2",
-    "validator": "^13.0.0"
+    "validator": "^13.0.0",
+    "yup": "^0.28.5"
   },
   "scripts": {
     "start": "craco start",
@@ -46,6 +47,7 @@
     "@types/react": "^16.9.34",
     "@types/react-dom": "^16.9.7",
     "@types/react-router-dom": "^5.1.5",
+    "@types/yup": "^0.28.3",
     "semantic-ui-less": "^2.4.1",
     "typescript": "^3.7.5"
   }

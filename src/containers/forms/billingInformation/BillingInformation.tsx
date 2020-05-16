@@ -1,105 +1,68 @@
 import React, { useState } from "react";
 import { getElementData, FormField } from "./utils";
-import { Form, Divider } from "semantic-ui-react";
+import { Form, Divider, Icon } from "semantic-ui-react";
 import InputFormField from "../../../components/input/formField/FormField";
-
+import { withFormik, FormikBag } from "formik";
+import Button from "../../../components/input/button/Button";
+import * as Yup from "yup";
 import styles from "./BillingInformation.module.scss";
-
+import CountryList from "../../../components/countryList/CountryList";
 var validator = require("validator");
 
-const BillingInformation = (props: { showDivider?: boolean }) => {
+const BillingInformation = ({
+  values,
+  touched,
+  errors,
+  handleChange,
+  isSubmitting,
+  handleBlur,
+  handleSubmit,
+  setFieldValue,
+  setFieldTouched,
+}: any) => {
+  const [isOptionsVisible, setOptionsVisibility] = useState(false);
+  const formData = {
+    firstName: {
+      label: "First Name",
+      placeholder: "Please enter first name",
+    },
+    lastName: {
+      label: "Last Name",
+      placeholder: "Please enter last name",
+    },
+    country: {
+      label: "Country",
+      placeholder: "eg. South Korea",
+    },
+    vatId: {
+      label: "VAT ID Number",
+      placeholder: "VAT ID",
+    },
+    billingAddress: {
+      label: "Billing Address",
+      placeholder: "Address",
+    },
+    companyName: {
+      label: "Comany Name",
+      placeholder: "Company Name",
+    },
+  };
   let billingClass = [styles.billingForm];
-  if (props.showDivider) {
+  if (values.showDivider) {
     billingClass.push(styles.removeBorder);
   }
-  const [formState, setFormState] = useState<{
-    [key: string]: FormField | boolean;
-  }>({
-    valid: false,
-    name: getElementData(
-      "email",
-      "Billing email",
-      "youremail@email.com",
-      { required: true, email: true },
-      null,
-      ""
-    ),
-    email: getElementData(
-      "country",
-      "Country",
-      "South Korea",
-      { required: true },
-      null,
-      ""
-    ),
-    vatId: getElementData(
-      "vatId",
-      "VAT ID number",
-      "VAT ID",
-      { required: true },
-      null,
-      ""
-    ),
-    billingAddress: getElementData(
-      "address",
-      "Blling Address",
-      "Address",
-      { required: true },
-      null,
-      ""
-    ),
-    companyName: getElementData(
-      "companyName",
-      "Company Name",
-      "Company Name",
-      { required: true },
-      null,
-      ""
-    ),
-  });
-  const updateValidity = (form: { [key: string]: FormField | boolean }) => {
-    let validity = true;
-    const keys = Object.keys(form);
-
-    for (let i = 0; i < keys.length; i++) {
-      if ((form[keys[i]] as FormField).valid != null)
-        validity = validity && (form[keys[i]] as FormField).valid;
-    }
-
-    return validity;
-  };
-  const onInputChanged = (value: string, key: string) => {
-    console.log("input changed", value, key);
-    let form = { ...formState };
-    let element = { ...(form[key] as FormField) };
-    element.elementConfig.value = value;
-    element.touched = true;
-    let errors = getErrors(element);
-
-    if (errors == null) element.valid = true;
-    else element.valid = false;
-    element.errors = errors;
-    form[key] = element;
-    form.valid = updateValidity(form);
-
-    setFormState(form);
-  };
-  const getErrors = (element: any) => {
-    if (element.validators.required) {
-      if (element.elementConfig.value == null) return { required: true };
-      if (element.elementConfig.value.trim() === "") return { required: true };
-    }
-
-    if (element.validators.email) {
-      if (!validator.isEmail(element.elementConfig.value))
-        return { email: true };
-    }
-    return null;
+  const toggleOptionsVisibility = () => {
+    let newState = !isOptionsVisible;
+    setOptionsVisibility(newState);
   };
   const getDivider = () => {
-    if (props.showDivider) return <Divider />;
+    if (values.showDivider) return <Divider />;
     else return null;
   };
+  const handleBlurDropdown = (e: any, { name, value }: any) =>
+    setFieldTouched(name, value);
+  const handleChangeDropdown = (e: any, { name, value }: any) =>
+    setFieldValue(name, value);
   return (
     <div className={styles.billingInformationWrapper}>
       <h6 className={styles.title}>Billing Information</h6>
@@ -108,46 +71,129 @@ const BillingInformation = (props: { showDivider?: boolean }) => {
         <Form>
           <div className={styles.singleForm}>
             <InputFormField
-              onChange={onInputChanged}
-              hasError={(formState.name as FormField).errors != null}
-              elementConfig={(formState.name as FormField).elementConfig}
+              error={errors.firstName}
+              elementConfig={formData.firstName}
+              handleChange={handleChange}
+              name={"firstName"}
+              value={values.firstName}
+              touched={touched.firstName}
             />
           </div>
           <div className={styles.singleForm}>
             <InputFormField
-              onChange={onInputChanged}
-              hasError={(formState.email as FormField).errors != null}
-              elementConfig={(formState.email as FormField).elementConfig}
+              error={errors.lastName}
+              elementConfig={formData.lastName}
+              handleChange={handleChange}
+              name={"lastName"}
+              value={values.lastName}
+              touched={touched.lastName}
+            />
+          </div>
+          <div className={styles.singleForm}>
+            {/* <InputFormField
+              error={errors.country}
+              elementConfig={formData.country}
+              handleChange={handleChange}
+              name={"country"}
+              value={values.country}
+              touched={touched.country}
+            /> */}
+            <CountryList
+              error={errors.country}
+              elementConfig={formData.country}
+              handleChange={handleChangeDropdown}
+              name={"country"}
+              value={values.country}
+              touched={touched.country}
             />
           </div>
           <Divider />
-          <h6 className={styles.title}>(Optional)</h6>
-          <div className={styles.singleForm}>
-            <InputFormField
-              onChange={onInputChanged}
-              hasError={(formState.vatId as FormField).errors != null}
-              elementConfig={(formState.vatId as FormField).elementConfig}
-            />
-          </div>
-          <div className={styles.singleForm}>
-            <InputFormField
-              onChange={onInputChanged}
-              hasError={(formState.billingAddress as FormField).errors != null}
-              elementConfig={
-                (formState.billingAddress as FormField).elementConfig
-              }
-            />
-          </div>
-          <div className={styles.singleForm}>
-            <InputFormField
-              onChange={onInputChanged}
-              hasError={(formState.companyName as FormField).errors != null}
-              elementConfig={(formState.companyName as FormField).elementConfig}
-            />
+          <div className={styles.optionWrapper}>
+            <div
+              onClick={() => toggleOptionsVisibility()}
+              className={styles.optionTitle}
+            >
+              <h6 className={styles.subtitle}>Optional</h6>
+              <Icon
+                style={{ color: "black" }}
+                name={isOptionsVisible ? "angle up" : "angle down"}
+              />
+            </div>
+            {isOptionsVisible ? (
+              <div className={styles.optionWrapperContent}>
+                <div className={styles.singleForm}>
+                  <InputFormField
+                    error={errors.password}
+                    elementConfig={formData.vatId}
+                    handleChange={handleChange}
+                    name={"vatId"}
+                    value={values.vatId}
+                    touched={touched.vatId}
+                  />
+                </div>
+                <div className={styles.singleForm}>
+                  <InputFormField
+                    error={errors.billingAddress}
+                    elementConfig={formData.billingAddress}
+                    handleChange={handleChange}
+                    name={"billingAddress"}
+                    value={values.billingAddress}
+                    touched={touched.billingAddress}
+                  />
+                </div>
+                <div className={styles.singleForm}>
+                  <InputFormField
+                    error={errors.companyName}
+                    elementConfig={formData.companyName}
+                    handleChange={handleChange}
+                    name={"companyName"}
+                    value={values.companyName}
+                    touched={touched.companyName}
+                  />
+                </div>
+              </div>
+            ) : null}
           </div>
         </Form>
+        <div className={styles.buttonWrapper}>
+          <Button
+            disabled={isSubmitting}
+            onClick={handleSubmit}
+            label={"Save Changes"}
+          />
+        </div>
       </div>
     </div>
   );
 };
-export default BillingInformation;
+const FormikBillingInfo = withFormik({
+  mapPropsToValues(props: any) {
+    return {
+      firstName: props.firstName || "",
+      lastName: props.lastName || "",
+      country: props.country || "",
+      vatId: "",
+      billingAddress: props.billingAddress || "",
+      companyName: props.companyName || "",
+      showDivider: props.showDivider || false,
+      onClose: props.onClose,
+    };
+  },
+  handleSubmit(values: any, { setErrors, setSubmitting, resetForm }) {
+    console.log(values);
+
+    setTimeout(() => {
+      setSubmitting(false);
+      resetForm();
+    }, 2000);
+  },
+  validationSchema: Yup.object().shape({
+    firstName: Yup.string().required("First name is required"),
+    lastName: Yup.string().required("Last name is required"),
+    country: Yup.string().required("Country is required"),
+    vatId: Yup.number().positive(),
+    billingAddress: Yup.string(),
+    companyName: Yup.string(),
+  }),
+})(BillingInformation);
+export default FormikBillingInfo;

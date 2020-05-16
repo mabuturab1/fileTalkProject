@@ -1,12 +1,22 @@
 import React from "react";
 import styles from "./ProgressBar.module.scss";
 import { Progress } from "semantic-ui-react";
-interface ProgressBarProps {
-  title?: string;
-  details?: string;
-  value?: number;
+export interface ProgressBarProps {
+  title: string;
+  usedValue: string;
+  totalValue: string;
+  value: number;
 }
 const progressBar = (props: ProgressBarProps) => {
+  let style = {
+    color: "blue",
+  };
+  if (props.value > 1) {
+    style = {
+      ...style,
+      color: "red",
+    };
+  }
   return (
     <div>
       <div className={styles.wrapper}>
@@ -16,10 +26,12 @@ const progressBar = (props: ProgressBarProps) => {
             <Progress
               value={props.value != null ? props.value : 0.1}
               total={1}
-              color={"blue"}
+              color={props.value > 1 ? "red" : "blue"}
             />
           </div>
-          <h4 className={styles.progressBarLabel}>{props.details}</h4>
+          <h4 className={styles.progressBarLabel}>
+            <span>{props.usedValue}</span>/<span>{props.totalValue}</span>
+          </h4>
         </div>
       </div>
     </div>

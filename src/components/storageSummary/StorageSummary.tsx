@@ -1,35 +1,60 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./StorageSummary.module.scss";
-import ProgressBar from "../progressBar/ProgressBar";
+import ProgressBar, { ProgressBarProps } from "../progressBar/ProgressBar";
 import { Link } from "react-router-dom";
 import { routes } from "../../interfaces/routes";
 import Button from "../input/button/Button";
-const storageSummary = (props: any) => {
+
+interface StorageSummaryProps {
+  onClose?: () => any;
+}
+const StorageSummary = (props: StorageSummaryProps) => {
+  const [progressbarsList, setProgressbarsList] = useState<ProgressBarProps[]>([
+    {
+      title: "Storage usages",
+      totalValue: "100MB",
+      usedValue: "1.0GB",
+      value: 10,
+    },
+    {
+      title: "Room count",
+      totalValue: "17",
+      usedValue: "25",
+      value: 17 / 25,
+    },
+  ]);
+  let progressbars = [];
+  for (let i = 0; i < progressbarsList.length; i++) {
+    progressbars.push(
+      <div key={i} className={styles.singleProgressbar}>
+        <ProgressBar {...progressbarsList[i]} />
+      </div>
+    );
+  }
+  let exceeded = false;
+  let index = progressbarsList.findIndex((el) => el.value > 1);
+  if (index >= 0) exceeded = true;
   return (
     <div className={styles.storageWrapper}>
       <h6 className={styles.titleText}>Storage usage</h6>
       <div className={styles.storageDetailsWrapper}>
-        <div className={styles.singleProgressbar}>
-          <ProgressBar
-            title={"Storage usages"}
-            value={1.4 / 2}
-            details={"1.4GB/2.0GB"}
-          />
-        </div>
-        <div className={styles.singleProgressbar}>
-          <ProgressBar title={"Rooms"} value={17 / 25} details={"17/25"} />
-        </div>
+        {progressbars}
         <div className={styles.buttonWrapper}>
           <Link to={routes.subscriptionPage}>
             <Button
-              label={"Upgrade"}
+              label={exceeded ? "Re-active plan" : "Upgrade"}
               type={"secondary"}
               padding={["0.8rem", "4rem"]}
             />
           </Link>
         </div>
+        {exceeded ? (
+          <h6 className={styles.exceededText}>
+            The overstorage and rooms will be deleted in 31 days
+          </h6>
+        ) : null}
       </div>
     </div>
   );
 };
-export default storageSummary;
+export default StorageSummary;
