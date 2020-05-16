@@ -10,7 +10,13 @@ export interface RoomItemProps {
   userList: string[];
 }
 export interface SubscriptionItem {
-  header: HeaderItem[];
+  header: {
+    monthlyPrice: HeaderItem;
+    type?: HeaderItem;
+    annualPrice?: HeaderItem;
+    planName?: HeaderItem;
+    roomDetails?: HeaderItem;
+  };
   offers: string[];
 }
 export enum SubscrptionTextSize {

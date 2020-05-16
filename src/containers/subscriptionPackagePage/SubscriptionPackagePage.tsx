@@ -1,6 +1,7 @@
 import React, { useState, useContext } from "react";
 import styles from "./SubscriptionPackagePage.module.scss";
 import { Checkbox } from "semantic-ui-react";
+import ToggleButton from "../../components/toggleButton/ToggleButton";
 import {
   SubscriptionItem,
   SubscrptionTextSize,
@@ -11,6 +12,7 @@ import SubscriptionContext, {
 } from "../../context/subscriptionContext";
 interface SubscriptionPackageProps {
   subscriptionItems: SubscriptionItem[];
+  changePlan: (val: CurrentPackage) => any;
 }
 const SubscriptionPackagePage = (props: SubscriptionPackageProps) => {
   const subsContext = useContext(SubscriptionContext);
@@ -23,26 +25,25 @@ const SubscriptionPackagePage = (props: SubscriptionPackageProps) => {
   };
   return (
     <div className={styles.wrapper}>
-      <div className={styles.checkboxWrapper}>
-        <p className={styles.checkboxLabel}>Billed Annually</p>
+      <ToggleButton
+        label={"Billed Annually"}
+        onChange={(e, d) => billedAnuallyChanged()}
+        checked={subsContext.billingAnually}
+      />
 
-        <Checkbox
-          checked={subsContext.billingAnually}
-          onChange={billedAnuallyChanged}
-          toggle
-        />
-      </div>
       <div className={styles.subscriptionWrapper}>
         <div className={styles.singleSubscription}>
           <SubscriptionDetail
             item={props.subscriptionItems[0]}
             value={CurrentPackage.Free}
+            changePlanClicked={props.changePlan}
           />
         </div>
         <div className={styles.singleSubscription}>
           <SubscriptionDetail
             item={props.subscriptionItems[1]}
             value={CurrentPackage.Premium}
+            changePlanClicked={props.changePlan}
           />
         </div>
       </div>

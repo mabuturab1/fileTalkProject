@@ -10,6 +10,7 @@ interface ButtonProps {
   type?: string;
   icon?: any;
   color?: string;
+  backgroundColor?: string;
   onClick?: (event: any, data: any) => any;
 }
 const button = (props: ButtonProps) => {
@@ -28,18 +29,14 @@ const button = (props: ButtonProps) => {
       paddingRight: props.padding[1],
     };
   }
-  if (props.width != null) {
-    style = {
-      ...style,
-      width: props.width,
-    };
-  }
-  if (props.height != null) {
-    style = {
-      ...style,
-      height: props.height,
-    };
-  }
+
+  style = {
+    ...style,
+    width: props.width,
+    height: props.height,
+    color: props.color,
+    backgroundColor: props.backgroundColor,
+  };
 
   if (props.type === "primary")
     if (props.icon != null)
@@ -70,11 +67,6 @@ const button = (props: ButtonProps) => {
         </Button>
       );
   if (props.type === "basic") {
-    if (props.color != null)
-      style = {
-        ...style,
-        color: props.color,
-      };
     if (props.icon != null)
       return (
         <Button icon={props.icon} style={style} basic content={label}></Button>

@@ -1,38 +1,11 @@
 $text-color: #444444;
 .orderSubscriptionWrapper {
-  display: flex;
-  position: relative;
-  flex-flow: column;
   width: 100%;
-  padding: 2rem 4rem;
-  .cancelButton {
-    border: none;
-    background: transparent;
-    color: $text-color;
-    cursor: pointer;
-    position: absolute;
-    font-family: "Roboto", "sans-serif";
-    top: 1rem;
-    right: 4rem;
-  }
-  .cancelButton:hover {
-    text-decoration: underline;
-  }
-  .header {
-    display: flex;
-    justify-content: center;
-  }
-  .headerTitle {
-    color: $text-color;
-    font-size: 1.2rem;
-    font-family: "Roboto", "sans-serif";
-    font-weight: bold;
-  }
+  height: 100%;
   .contentWrapper {
     display: flex;
-  }
-  .singleWrapper {
-    padding: 1rem;
-    width: 50%;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
   }
 }

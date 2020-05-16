@@ -52,11 +52,11 @@ $offers-height: 25rem;
   .subscriptionOffers {
     display: flex;
     flex-flow: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     // height: 60%;
     height: $offers-height;
-    padding: 3rem;
+    padding: 3rem 3rem 3rem 3rem;
   }
   .offersList {
     list-style: none;
@@ -66,8 +66,9 @@ $offers-height: 25rem;
     text-align: left;
     font-size: 0.8rem;
     color: $subscription-offers-color;
+    padding: 3px 0rem;
   }
   .buttonWrapper {
-    margin-top: 7rem;
+    margin: 0rem 0 2rem 0;
   }
 }

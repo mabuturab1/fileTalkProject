@@ -45,6 +45,7 @@ const HomePage = (props: any) => {
       value={{
         billingAnually: annualBilling,
         defaultPackage: currentPackage,
+
         isAnnualBilling: changeAnnualBilling,
         changeCurrentPackage: changeCurrentPackage,
       }}

@@ -13,15 +13,9 @@ interface formFieldProps {
   elementConfig: { label: string; placeholder: string };
   name: string;
   touched: boolean;
+  icon?: string;
 }
 const formField = (props: formFieldProps) => {
-  // let required = "*";
-  // let classes: string[] = [];
-
-  // let inputClasses = ["inputStyle"];
-  // if (props.hasError) inputClasses.push("borderDanger");
-
-  // if (!props.validators || !props.validators.required) required = "";
   const labelStyle = {
     minWidth: "10rem",
     color: "black",
@@ -38,22 +32,23 @@ const formField = (props: formFieldProps) => {
     };
   }
   return (
-    <Form.Field>
+    <Form.Field inline>
       <label className={styles.myLabel} style={labelStyle}>
         {props.elementConfig.label}
       </label>
-      <div className={styles.inputWrapper}>
-        <Input
-          style={inputStyle}
-          name={props.name}
-          onChange={props.handleChange}
-          placeholder={props.elementConfig.placeholder}
-          value={props.value}
-        />
-        {props.error && props.touched && (
-          <span className={styles.errorWrapper}>{props.error}</span>
-        )}
-      </div>
+
+      <Input
+        icon={props.icon}
+        iconPosition={"left"}
+        style={inputStyle}
+        name={props.name}
+        onChange={props.handleChange}
+        placeholder={props.elementConfig.placeholder}
+        value={props.value}
+      />
+      {props.error && props.touched && (
+        <span className={styles.errorWrapper}>{props.error}</span>
+      )}
     </Form.Field>
   );
 };

@@ -3,6 +3,7 @@ import styles from "./SubscriptionDetail.module.scss";
 import {
   SubscriptionItem,
   SubscrptionTextSize,
+  HeaderItem,
 } from "../../interfaces/interfaceList";
 import { Icon } from "semantic-ui-react";
 import Button from "../input/button/Button";
@@ -12,25 +13,27 @@ import SubscriptionContext, {
 interface SupscriptionDetailsProps {
   item?: SubscriptionItem;
   value: CurrentPackage;
+  changePlanClicked: (val: CurrentPackage) => any;
 }
-const subscription = (props: SupscriptionDetailsProps) => {
+const Subscription = (props: SupscriptionDetailsProps) => {
   const subscriptionContext = useContext(SubscriptionContext);
   const headerItems: any[] = [];
   if (props.item != null && props.item.header != null) {
-    for (let i = 0; i < props.item.header.length; i++) {
+    let vals = Object.values(props.item.header);
+    vals.forEach((el, i) => {
       let style = styles.mainText;
-      if (props.item.header[i].textSize === SubscrptionTextSize.MEDIUM)
+      if ((el as HeaderItem).textSize === SubscrptionTextSize.MEDIUM)
         style = styles.mediumText;
-      if (props.item.header[i].textSize === SubscrptionTextSize.SMALL)
+      if ((el as HeaderItem).textSize === SubscrptionTextSize.SMALL)
         style = styles.smallText;
 
       headerItems.push(
         <h4 key={i} className={style}>
-          {props.item.header[i].text}{" "}
-          <sub className={styles.subscript}>{props.item.header[i].subText}</sub>{" "}
+          {(el as HeaderItem).text}{" "}
+          <sub className={styles.subscript}>{(el as HeaderItem).subText}</sub>
         </h4>
       );
-    }
+    });
   }
   const subscriptionOffers: any[] = [];
   if (props.item?.offers != null) {
@@ -45,20 +48,27 @@ const subscription = (props: SupscriptionDetailsProps) => {
       );
     }
   }
+  const changePackage = (plan: CurrentPackage) => {
+    subscriptionContext.changeCurrentPackage(props.value);
+  };
   return (
     <div className={styles.subscriptionWrapper}>
       <div className={styles.header}>{headerItems}</div>
       <div className={styles.subscriptionOffers}>
-        <ul className={styles.offersList}>{subscriptionOffers}</ul>
         <div className={styles.buttonWrapper}>
-          {subscriptionContext.defaultPackage == props.value ? (
-            <Button label={"Subscribe Now"} />
+          {subscriptionContext.defaultPackage != props.value ? (
+            <Button label={"Subscribe Now"} onClick={changePackage} />
           ) : (
-            <Button label={"Change Plan"} />
+            <Button
+              onClick={() => props.changePlanClicked(props.value)}
+              label={"Change Plan"}
+              backgroundColor={"#AAAAAA"}
+            />
           )}
         </div>
+        <ul className={styles.offersList}>{subscriptionOffers}</ul>
       </div>
     </div>
   );
 };
-export default subscription;
+export default Subscription;

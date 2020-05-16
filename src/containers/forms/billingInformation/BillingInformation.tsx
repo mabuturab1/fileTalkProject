@@ -15,10 +15,9 @@ const BillingInformation = ({
   errors,
   handleChange,
   isSubmitting,
-  handleBlur,
+
   handleSubmit,
   setFieldValue,
-  setFieldTouched,
 }: any) => {
   const [isOptionsVisible, setOptionsVisibility] = useState(false);
   const formData = {
@@ -59,8 +58,7 @@ const BillingInformation = ({
     if (values.showDivider) return <Divider />;
     else return null;
   };
-  const handleBlurDropdown = (e: any, { name, value }: any) =>
-    setFieldTouched(name, value);
+
   const handleChangeDropdown = (e: any, { name, value }: any) =>
     setFieldValue(name, value);
   return (
@@ -90,14 +88,6 @@ const BillingInformation = ({
             />
           </div>
           <div className={styles.singleForm}>
-            {/* <InputFormField
-              error={errors.country}
-              elementConfig={formData.country}
-              handleChange={handleChange}
-              name={"country"}
-              value={values.country}
-              touched={touched.country}
-            /> */}
             <CountryList
               error={errors.country}
               elementConfig={formData.country}
