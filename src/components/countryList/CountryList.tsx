@@ -9,6 +9,8 @@ interface CountryListProps {
   elementConfig: { label: string; placeholder: string };
   name: string;
   touched: boolean;
+  labelStyle?: any;
+  inputStyle?: any;
 }
 const countryList = (props: CountryListProps) => {
   let countryOptionsList: {
@@ -26,17 +28,20 @@ const countryList = (props: CountryListProps) => {
     });
   });
 
-  const labelStyle = {
-    minWidth: "10rem",
+  let labelStyle = {
+    width: "10rem",
     color: "black",
   };
-
+  labelStyle = {
+    ...labelStyle,
+    ...props.labelStyle,
+  };
   return (
     <div className={styles.wrapper}>
       <label className={styles.labelStyle} style={labelStyle}>
         {props.elementConfig.label}
       </label>
-      <div className={styles.dropdownWrapper}>
+      <div className={styles.dropdownWrapper} style={props.inputStyle}>
         <Dropdown
           placeholder={props.elementConfig.placeholder}
           name={props.name}

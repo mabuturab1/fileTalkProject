@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 import styles from "./CurrentPlanPage.module.scss";
 import Button from "../../components/input/button/Button";
+import { CurrentPackage } from "../../context/subscriptionContext";
 export interface CurrentPlanProps {
   planType?: string;
   nextPayment?: string;
   renewDate?: string;
+  changePlan?: () => any;
+  currentPackage?: CurrentPackage;
 }
 const CurrentPlanPage = (props: CurrentPlanProps) => {
   return (
@@ -26,9 +29,14 @@ const CurrentPlanPage = (props: CurrentPlanProps) => {
           </div>
         </div>
         <div className={styles.buttonWrapper}>
-          <span></span>
-          <Button label={"Change Plan"} />
-          <a className={styles.cancelText}>Cancel Subscription</a>
+          <Button
+            onClick={props.changePlan}
+            label={
+              props.currentPackage == CurrentPackage.Premium
+                ? "Change Plan"
+                : "Re-activate plan"
+            }
+          />
         </div>
       </div>
     </div>

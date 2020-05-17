@@ -12,12 +12,14 @@ import SubscriptionContext, {
 } from "../../context/subscriptionContext";
 interface SubscriptionPackageProps {
   subscriptionItems: SubscriptionItem[];
+  isAlreadySet: boolean;
   changePlan: (val: CurrentPackage) => any;
 }
 const SubscriptionPackagePage = (props: SubscriptionPackageProps) => {
   const subsContext = useContext(SubscriptionContext);
 
   const billedAnuallyChanged = () => {
+    if (props.isAlreadySet) return;
     let prevState = subsContext.billingAnually;
     let newState = !prevState;
 
@@ -37,6 +39,8 @@ const SubscriptionPackagePage = (props: SubscriptionPackageProps) => {
             item={props.subscriptionItems[0]}
             value={CurrentPackage.Free}
             changePlanClicked={props.changePlan}
+            isAlreadySet={props.isAlreadySet}
+            isNotSubscribed={"Downgrade"}
           />
         </div>
         <div className={styles.singleSubscription}>
@@ -44,6 +48,8 @@ const SubscriptionPackagePage = (props: SubscriptionPackageProps) => {
             item={props.subscriptionItems[1]}
             value={CurrentPackage.Premium}
             changePlanClicked={props.changePlan}
+            isAlreadySet={props.isAlreadySet}
+            isNotSubscribed={"Upgrade"}
           />
         </div>
       </div>

@@ -7,8 +7,10 @@
   text-align: left;
   font-weight: bold;
 }
-
-.inputWrapper .errorWrapper {
+.inputWrapper {
+  display: inline-block;
+}
+.errorWrapper {
   color: #ff604f;
   display: block;
 }

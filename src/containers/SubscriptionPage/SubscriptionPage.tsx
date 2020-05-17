@@ -4,7 +4,7 @@ import CurrentPlanPage, {
   CurrentPlanProps,
 } from "../currentPlanPage/CurrentPlanPage";
 import SubscriptionPackagePage from "../subscriptionPackagePage/SubscriptionPackagePage";
-import PaymentDetails from "../../components/paymentDetails/PaymentDetails";
+import moment from "moment";
 import {
   subscriptionItemsInit,
   getMonthPaymentText,
@@ -19,18 +19,24 @@ import OrderSummary, {
 } from "../../components/orderSummary/OrderSummary";
 import { Modal } from "semantic-ui-react";
 import OrderSubscriptionPage from "../orderSubscriptionPage/OrderSubscriptionPage";
+import SemanticModal from "../../components/semanticModal/SemanticModal";
 
 interface SubscriptionPageProps {
-  onClose?: () => any;
+  onClose: () => any;
 }
 const SubscriptionPage = (props: SubscriptionPageProps) => {
   const [showCurrentPlan, setCurrentPlan] = useState<boolean>(false);
   const [showOrderDetails, setOrderDetails] = useState(false);
+  const [prevSubscriptionStatus, setPrevSubscriptionStatus] = useState({
+    billingAnnually: false,
+    currentPackage: CurrentPackage.Free,
+  });
   let subscriptionItems = subscriptionItemsInit.slice();
   const subsContext = useContext(SubscriptionContext);
-
+  let monthlyPrice = 14;
+  let yearlyPrice = 9;
   const getSubscriptionDetails = (): SubscriptionItem[] => {
-    let billingRate = subsContext.billingAnually ? 9 : 14;
+    let billingRate = subsContext.billingAnually ? yearlyPrice : monthlyPrice;
     console.log("billing rate is", billingRate);
     let tempSubsItem = subscriptionItems.slice();
     let premiumItem = { ...tempSubsItem[1] };
@@ -43,26 +49,39 @@ const SubscriptionPage = (props: SubscriptionPageProps) => {
     return tempSubsItem;
   };
 
-  const closeOrderDetails = () => {
-    setOrderDetails(false);
+  const toggleOrderDetailsDialog = (val: boolean) => {
+    if (val) saveCurrentSubscriptionState();
+    else getBackOriginalSubscriptionState();
+    setOrderDetails(val);
   };
-
+  const saveCurrentSubscriptionState = () => {
+    setPrevSubscriptionStatus({
+      billingAnnually: subsContext.billingAnually,
+      currentPackage: subsContext.defaultPackage,
+    });
+  };
+  const getBackOriginalSubscriptionState = () => {
+    subsContext.isAnnualBilling(prevSubscriptionStatus.billingAnnually);
+    subsContext.changeCurrentPackage(prevSubscriptionStatus.currentPackage);
+  };
   const getModal = (wrappedComponet: any) => {
     return (
-      <Modal
+      <SemanticModal
         open={true}
-        basic
         size="tiny"
         style={{ backgroundColor: "white" }}
-        centered={true}
-      >
-        <Modal.Content>{wrappedComponet}</Modal.Content>
-      </Modal>
+        children={wrappedComponet}
+      />
     );
   };
 
   const changePlan = (val: CurrentPackage) => {
-    console.log("change plan clicked");
+    let prevState = subsContext.defaultPackage;
+    if (showCurrentPlan) {
+      setOrderDetails(true);
+      return;
+    }
+    subsContext.changeCurrentPackage(val);
     setOrderDetails(true);
   };
 
@@ -70,35 +89,65 @@ const SubscriptionPage = (props: SubscriptionPageProps) => {
     let currentplan: CurrentPlanProps = {
       planType: "Free",
       nextPayment: "0$",
-      renewDate: new Date().toString(),
+      renewDate: moment().format("MMMM-DD,YYYY"),
+      currentPackage: subsContext.defaultPackage,
     };
-    if (subsContext.billingAnually)
+    let nextDateInc = subsContext.billingAnually
+      ? moment().add(1, "years")
+      : moment().add(1, "months");
+    if (subsContext.billingAnually) {
       currentplan.planType = "Personal annual subscription plan";
-    else currentplan.planType = "Presonal monthly subscription plan";
+    } else currentplan.planType = "Presonal monthly subscription plan";
     if (subsContext.defaultPackage == CurrentPackage.Premium) {
       let data = getSubscriptionDetails()[1];
       if (data.header.annualPrice)
-        currentplan.nextPayment = data.header.annualPrice.text;
+        currentplan.nextPayment = subsContext.billingAnually
+          ? `\$${yearlyPrice * 12}`
+          : `\$${monthlyPrice}`;
     }
+    currentplan.renewDate = nextDateInc.format("MMMM-DD,YYYY");
     return currentplan;
   };
 
   const getOrderSummary = () => {
+    let nextDateInc = subsContext.billingAnually
+      ? moment().add(1, "years")
+      : moment().add(1, "months");
     let currentplan: OrderSummaryProps = {
       plan: "Free",
       totalAmount: "0$",
-      startingDate: new Date().toString(),
-      renewDate: new Date().toString(),
+      startingDate: "Immediatey",
+      renewDate: nextDateInc.format("MMMM-DD,YYYY"),
+      pricePerMonth: "$0",
     };
-    if (subsContext.billingAnually)
+    if (subsContext.billingAnually) {
       currentplan.plan = "Personal annual subscription plan";
-    else currentplan.plan = "Presonal monthly subscription plan";
+      currentplan.discountFigure =
+        Math.round(
+          (100 * (monthlyPrice - yearlyPrice)) / monthlyPrice
+        ).toString() + " %";
+    } else currentplan.plan = "Presonal monthly subscription plan";
     if (subsContext.defaultPackage == CurrentPackage.Premium) {
       let data = getSubscriptionDetails()[1];
-      if (data.header.annualPrice)
-        currentplan.totalAmount = data.header.annualPrice.text;
+      currentplan.totalAmount = `\$${
+        subsContext.billingAnually ? yearlyPrice * 12 : monthlyPrice
+      }`;
+      currentplan.pricePerMonth = `\$${
+        subsContext.billingAnually ? yearlyPrice : monthlyPrice
+      }`;
     }
     return currentplan;
+  };
+  const onPaid = () => {
+    setCurrentPlan(true);
+    setOrderDetails(false);
+  };
+  const onChangePlan = () => {
+    setOrderDetails(false);
+  };
+  const onCancelPlan = () => {
+    setOrderDetails(false);
+    subsContext.changeCurrentPackage(CurrentPackage.Free);
   };
   return (
     <div className={styles.wrapper}>
@@ -106,20 +155,28 @@ const SubscriptionPage = (props: SubscriptionPageProps) => {
         ? getModal(
             <OrderSubscriptionPage
               orderSummaryData={getOrderSummary()}
-              onClose={closeOrderDetails}
+              onClose={() => toggleOrderDetailsDialog(false)}
+              onPaid={onPaid}
+              isAlreadySet={showCurrentPlan}
+              onChangePlan={onChangePlan}
+              onCancelPlan={onCancelPlan}
             />
           )
         : null}
 
       {showCurrentPlan && (
         <div className={styles.currentPlan}>
-          <CurrentPlanPage {...getCurrentPlan()} />
+          <CurrentPlanPage
+            changePlan={() => toggleOrderDetailsDialog(true)}
+            {...getCurrentPlan()}
+          />
         </div>
       )}
       <div className={styles.subscriptionPackage}>
         <SubscriptionPackagePage
           subscriptionItems={getSubscriptionDetails()}
           changePlan={changePlan}
+          isAlreadySet={showCurrentPlan}
         />
       </div>
     </div>

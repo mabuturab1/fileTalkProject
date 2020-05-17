@@ -13,6 +13,8 @@ import SubscriptionContext, {
 interface SupscriptionDetailsProps {
   item?: SubscriptionItem;
   value: CurrentPackage;
+  isAlreadySet: boolean;
+  isNotSubscribed: string;
   changePlanClicked: (val: CurrentPackage) => any;
 }
 const Subscription = (props: SupscriptionDetailsProps) => {
@@ -57,11 +59,16 @@ const Subscription = (props: SupscriptionDetailsProps) => {
       <div className={styles.subscriptionOffers}>
         <div className={styles.buttonWrapper}>
           {subscriptionContext.defaultPackage != props.value ? (
-            <Button label={"Subscribe Now"} onClick={changePackage} />
+            <Button
+              label={
+                props.isAlreadySet ? props.isNotSubscribed : "Subscribe Now"
+              }
+              onClick={() => props.changePlanClicked(props.value)}
+            />
           ) : (
             <Button
               onClick={() => props.changePlanClicked(props.value)}
-              label={"Change Plan"}
+              label={props.isAlreadySet ? "Subscribed" : "Current Plan"}
               backgroundColor={"#AAAAAA"}
             />
           )}

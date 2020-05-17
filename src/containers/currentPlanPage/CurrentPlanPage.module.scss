@@ -17,9 +17,9 @@ $text-color-description: #565656;
     border: 1px solid $border-color;
     padding: 2rem 0;
     display: flex;
-    flex-flow: column;
-    justify-content: center;
-    align-items: center;
+    flex-flow: row;
+    justify-content: flex-end;
+    align-items: flex-end;
   }
   .planDetailsContent {
     text-align: left;
@@ -30,12 +30,13 @@ $text-color-description: #565656;
     font-size: 1rem;
     text-align: left;
     margin-bottom: 0.5rem;
+    color: $text-color-head;
   }
   .buttonWrapper {
     position: relative;
     padding: 0 2rem;
     margin-top: 2.5rem;
-    width: 100%;
+
     display: flex;
     justify-content: space-between;
     align-items: center;

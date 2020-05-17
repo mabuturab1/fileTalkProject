@@ -2,10 +2,7 @@ import React from "react";
 import styles from "./PaymentDetails.module.scss";
 import { Input, Icon, Form, Divider } from "semantic-ui-react";
 import Button from "../input/button/Button";
-import PaymentMethod from "../../assets/images/PaymentMethod.png";
-import PaymentMethod1 from "../../assets/images/PaymentMethod1.png";
-import PaymentMethod2 from "../../assets/images/PaymentMethod2.png";
-import PaymentMethod3 from "../../assets/images/PaymentMethod3.png";
+
 import InputFormField from "../input/formField/FormField";
 import CountryList from "../countryList/CountryList";
 import HeaderText from "../headerText/HeaderText";
@@ -42,41 +39,35 @@ const PaymentDetails = ({
   };
   const handleChangeDropdown = (e: any, { name, value }: any) =>
     setFieldValue(name, value);
-  const getPaymentMethods = () => {
-    return [PaymentMethod, PaymentMethod1, PaymentMethod2, PaymentMethod3].map(
-      (el) => {
-        return (
-          <img className={styles.imageStyle} src={el} alt="paymentMethod" />
-        );
-      }
-    );
-  };
+
   return (
     <Form>
-      <div className={styles.billingForm}>
-        <div className={styles.header}>
-          <HeaderText onCancel={values.onClose} titleText={"Payment"} />
-        </div>
-
-        <div className={styles.singleForm}>
-          <InputFormField
-            error={errors.fullName}
-            elementConfig={formData.fullName}
-            handleChange={handleChange}
-            name={"fullName"}
-            value={values.fullName}
-            touched={touched.fullName}
-          />
-        </div>
-        <div className={styles.singleForm}>
-          <CountryList
-            error={errors.country}
-            elementConfig={formData.country}
-            handleChange={handleChangeDropdown}
-            name={"country"}
-            value={values.country}
-            touched={touched.country}
-          />
+      <div className={styles.billingForm} style={values.contentStyle}>
+        <div className={styles.personalInfo}>
+          <div className={styles.singleForm}>
+            <InputFormField
+              error={errors.fullName}
+              elementConfig={formData.fullName}
+              handleChange={handleChange}
+              name={"fullName"}
+              value={values.fullName}
+              touched={touched.fullName}
+              inputStyle={{ width: "15rem" }}
+              labelStyle={{ width: "5rem" }}
+            />
+          </div>
+          <div className={styles.singleForm}>
+            <CountryList
+              error={errors.country}
+              elementConfig={formData.country}
+              handleChange={handleChangeDropdown}
+              name={"country"}
+              value={values.country}
+              touched={touched.country}
+              inputStyle={{ width: "15rem" }}
+              labelStyle={{ width: "5rem" }}
+            />
+          </div>
         </div>
         <Divider />
         <div className={styles.cardDetails}>
@@ -88,22 +79,32 @@ const PaymentDetails = ({
             name={"creditCardNumber"}
             value={values.creditCardNumber}
             touched={touched.creditCardNumber}
+            isInputFullWidth={true}
           />
           <p className={styles.cardSubtitles}>
             Your credit card will be stored with out secure partner Stripe
           </p>
         </div>
         <div className={styles.buttonWrapper}>
-          <Button
-            padding={["0.8rem", "6rem"]}
-            label={"Pay " + values.totalAmount}
-          />
-        </div>
-        <div className={styles.supportedPaymentMethods}>
-          <div className={styles.imageTile}>{getPaymentMethods()}</div>
-          <p className={styles.cardSubtitles}>
-            All major credit and debit cards supported
-          </p>
+          {!errors.paymentError ? (
+            <Button
+              disabled={isSubmitting}
+              onClick={handleSubmit}
+              padding={["0.8rem", "6rem"]}
+              label={"Pay " + values.totalAmount}
+              showLoader={isSubmitting}
+            />
+          ) : (
+            <Button
+              disabled={isSubmitting}
+              onClick={handleSubmit}
+              padding={["0.8rem", "6rem"]}
+              label={"Payment Error"}
+              backgroundColor={"#DDDDDD"}
+              isErrorText={true}
+              showLoader={isSubmitting}
+            />
+          )}
         </div>
       </div>
     </Form>
@@ -118,7 +119,10 @@ const FormikPaymentBillingInfo = withFormik({
       country: props.country || "",
       creditCardNumber: props.creditCardNumber || "",
       totalAmount: props.totalAmount || 0,
+      paymentError: false,
       onClose: props.onClose,
+      onSubmit: props.onPay,
+      contentStyle: props.contentStyle,
     };
   },
   handleSubmit(values: any, { setErrors, setSubmitting, resetForm }) {
@@ -126,14 +130,25 @@ const FormikPaymentBillingInfo = withFormik({
 
     setTimeout(() => {
       setSubmitting(false);
-      resetForm();
+      if (values.creditCardNumber.length < 10) {
+        setErrors({
+          paymentError: "Payment Error",
+        });
+        setSubmitting(false);
+      } else {
+        resetForm();
+        values.onSubmit();
+      }
     }, 2000);
   },
   validationSchema: Yup.object().shape({
     fullName: Yup.string().required("First name is required"),
 
     country: Yup.string().required("Country is required"),
-    creditCardNumber: Yup.number().required("Country is required"),
+    creditCardNumber: Yup.number()
+      .typeError("not a valid number")
+      .positive("not a valid number")
+      .required("Card number is required"),
   }),
 })(PaymentDetails);
 export default FormikPaymentBillingInfo;

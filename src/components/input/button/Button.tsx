@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Icon } from "semantic-ui-react";
+import { Button, Icon, Loader } from "semantic-ui-react";
 
 interface ButtonProps {
   disabled?: boolean;
@@ -12,12 +12,15 @@ interface ButtonProps {
   color?: string;
   backgroundColor?: string;
   onClick?: (event: any, data: any) => any;
+  showLoader?: boolean;
+  isErrorText?: boolean;
 }
 const button = (props: ButtonProps) => {
   let style: { [key: string]: any } = {
     textAlign: "center",
   };
   let label = "";
+  let iconObj = null;
 
   if (props.label != null) label = props.label;
   if (props.padding != null && props.padding.length > 1) {
@@ -37,59 +40,51 @@ const button = (props: ButtonProps) => {
     color: props.color,
     backgroundColor: props.backgroundColor,
   };
+  if (props.isErrorText)
+    style = {
+      ...style,
+      color: "#ff604f",
+    };
+  if (props.showLoader) {
+    label = "";
 
+    iconObj = <Loader active inline />;
+  }
   if (props.type === "primary")
-    if (props.icon != null)
-      return (
-        <Button style={style} primary>
-          {label}
-          <Icon name={props.icon} />
-        </Button>
-      );
-    else
-      return (
-        <Button style={style} primary>
-          {label}
-        </Button>
-      );
+    return (
+      <Button onClick={props.onClick} style={style} primary>
+        {label}
+        {iconObj}
+      </Button>
+    );
+
   if (props.type === "secondary")
-    if (props.icon != null)
-      return (
-        <Button style={style} secondary>
-          {label}
-          <Icon name={props.icon} />
-        </Button>
-      );
-    else
-      return (
-        <Button style={style} secondary>
-          {label}
-        </Button>
-      );
+    return (
+      <Button onClick={props.onClick} style={style} secondary>
+        {label}
+        {iconObj}
+      </Button>
+    );
+
   if (props.type === "basic") {
-    if (props.icon != null)
-      return (
-        <Button icon={props.icon} style={style} basic content={label}></Button>
-      );
-    else return <Button style={style} basic content={label} />;
+    return (
+      <Button onClick={props.onClick} style={style} basic>
+        {label}
+        {iconObj}
+      </Button>
+    );
   }
 
-  if (props.icon != null)
-    return (
-      <Button icon={props.icon} style={style} primary>
-        {label}
-      </Button>
-    );
-  else
-    return (
-      <Button
-        disabled={props.disabled}
-        onClick={props.onClick}
-        style={style}
-        primary
-      >
-        {label}
-      </Button>
-    );
+  return (
+    <Button
+      disabled={props.disabled}
+      onClick={props.onClick}
+      style={style}
+      primary
+    >
+      {label}
+      {iconObj}
+    </Button>
+  );
 };
 export default button;

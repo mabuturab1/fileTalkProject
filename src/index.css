@@ -34,7 +34,8 @@ div {
 .ui.largescreen.modal {
   width: 80vw !important;
 }
-.ui.small.visible.active {
+.ui.small.visible.active,
+.ui.tiny.visible.active {
   position: absolute;
   top: 40%;
   left: 50%;
