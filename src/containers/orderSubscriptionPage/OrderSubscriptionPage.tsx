@@ -3,57 +3,72 @@ import styles from "./OrderSubscriptionPage.module.scss";
 import BillingInformation from "../forms/billingInformation/BillingInformation";
 import OrderSummary, {
   OrderSummaryProps,
+  OrderSummaryData,
 } from "../../components/orderSummary/OrderSummary";
 import PaymentDetails from "../../components/paymentDetails/PaymentDetails";
 import HeaderText from "../../components/headerText/HeaderText";
 import { Divider } from "semantic-ui-react";
+import SubscriptionContext, {
+  CurrentPackage,
+} from "../../context/subscriptionContext";
 interface OrderPageProps {
-  orderSummaryData: OrderSummaryProps;
+  getOrderSummaryData: (annualSubscription: boolean) => OrderSummaryData;
   isAlreadySet: boolean;
-  onChangePlan: () => any;
+  currentPacakge: CurrentPackage;
+  onChangePlan: (val: boolean) => any;
   onCancelPlan: () => any;
-  onPaid: () => any;
+  onPaid: (billingAnnually: boolean) => any;
   onClose: () => any;
 }
 const OrderSubscriptionPage = (props: OrderPageProps) => {
+  const subsContext = useContext(SubscriptionContext);
   const [showOrderSummary, setOrderSummary] = useState(true);
-
+  const [tempBillingAnnually, setTempBillingAnnually] = useState(
+    subsContext.billingAnually
+  );
   const onProceedClicked = () => {
     setOrderSummary(false);
   };
   const onPaid = () => {
-    props.onPaid();
+    console.log("annual billing in order subscription is", tempBillingAnnually);
+    props.onPaid(tempBillingAnnually);
   };
 
   let contentStyle = {
     padding: "0 15%",
   };
+  let orderSummaryData = props.getOrderSummaryData(tempBillingAnnually);
+  const getTitleText = () => {
+    if (showOrderSummary && !props.isAlreadySet) return "Order Summary";
+    else if (showOrderSummary && props.isAlreadySet) return "Change Plan";
+    else return "Payment";
+  };
   return (
     <div className={styles.orderSubscriptionWrapper}>
       <div className={styles.header}>
-        <HeaderText
-          onCancel={props.onClose}
-          titleText={showOrderSummary ? "Order Summary" : "Payment"}
-        />
+        <HeaderText onCancel={props.onClose} titleText={getTitleText()} />
       </div>
       <div className={styles.contentWrapper}>
         {!showOrderSummary ? (
           <PaymentDetails
             onClose={props.onClose}
-            totalAmount={props.orderSummaryData.totalAmount}
+            totalAmount={orderSummaryData.totalAmount}
             onPay={onPaid}
             contentStyle={contentStyle}
           />
         ) : null}
         {showOrderSummary ? (
           <OrderSummary
-            {...props.orderSummaryData}
+            data={orderSummaryData}
             onProceed={onProceedClicked}
-            onChangePlan={props.onChangePlan}
+            onChangePlan={() => props.onChangePlan(tempBillingAnnually)}
             onCancelPlan={props.onCancelPlan}
             isAlreadySet={props.isAlreadySet}
             contentStyle={contentStyle}
             onClose={props.onClose}
+            isAnnualBilling={tempBillingAnnually}
+            billingStatusChanged={(val: boolean) => setTempBillingAnnually(val)}
+            currentPackage={props.currentPacakge}
           />
         ) : null}
       </div>

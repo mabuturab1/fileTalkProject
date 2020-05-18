@@ -9,14 +9,19 @@ import ConfirmationScreen from "../confirmationScreen/ConfirmationScreen";
 import SubscriptionContext, {
   CurrentPackage,
 } from "../../context/subscriptionContext";
-
-export interface OrderSummaryProps {
+export interface OrderSummaryData {
   plan?: string;
   startingDate?: string;
   renewDate?: string;
   totalAmount?: string;
   pricePerMonth?: string;
   discountFigure?: string;
+}
+export interface OrderSummaryProps {
+  data: OrderSummaryData;
+  currentPackage: CurrentPackage;
+  isAnnualBilling: boolean;
+  billingStatusChanged: (val: boolean) => any;
   onClose?: () => any;
   onProceed?: () => any;
   onChangePlan?: () => any;
@@ -33,16 +38,17 @@ const OrderSummary = (props: OrderSummaryProps) => {
   const [showConfirmationDialog, setConfirmationDialog] = useState(false);
 
   const billedAnuallyChanged = () => {
-    let prevState = subsContext.billingAnually;
+    let prevState = props.isAnnualBilling;
     let newState = !prevState;
 
-    subsContext.isAnnualBilling(newState);
+    props.billingStatusChanged(newState);
   };
   const getDiscount = () => {
-    return subsContext.billingAnually &&
-      subsContext.defaultPackage == CurrentPackage.Premium &&
-      props.discountFigure != null
-      ? `(${props.discountFigure})`
+    return props.isAlreadySet ||
+      (props.isAnnualBilling &&
+        props.currentPackage == CurrentPackage.Premium &&
+        props.data.discountFigure != null)
+      ? `(${props.data.discountFigure} Discount)`
       : null;
   };
   const toggleConfirmationDialog = (val: boolean) => {
@@ -66,8 +72,8 @@ const OrderSummary = (props: OrderSummaryProps) => {
               headerText={"Are you sure you want to Cancel Subscription"}
               onClose={() => toggleConfirmationDialog(false)}
               textList={[
-                `Current plan: ${props.plan}`,
-                `Your subscription will be ended in ${props.renewDate}`,
+                `Current plan: ${props.data.plan}`,
+                `Your subscription will be ended in ${props.data.renewDate}`,
               ]}
               onConfirm={onCancelPlan}
             />
@@ -79,35 +85,45 @@ const OrderSummary = (props: OrderSummaryProps) => {
           <ToggleButton
             labelStyle={{ fontWeight: "bold" }}
             label={"Billing Annually"}
-            checked={subsContext.billingAnually}
+            checked={props.isAnnualBilling}
             onChange={billedAnuallyChanged}
           />
-          <span className={styles.discountStyle}>{getDiscount()}</span>
+          <span
+            className={
+              props.isAlreadySet
+                ? [styles.discountStyle, styles.smallText].join(" ")
+                : styles.discountStyle
+            }
+          >
+            {getDiscount()}
+          </span>
         </div>
         <ul className={styles.orderDetailList}>
           <li className={styles.singleItem}>
             <span className={styles.label}>Plan</span>
-            <span className={styles.value}>{props.plan}</span>
+            <span className={styles.value}>{props.data.plan}</span>
           </li>
           {!props.isAlreadySet ? (
             <li className={styles.singleItem}>
               <span className={styles.label}>Starting Date</span>
-              <span className={styles.value}>{props.startingDate}</span>
+              <span className={styles.value}>{props.data.startingDate}</span>
             </li>
           ) : (
             <li className={styles.singleItem}>
               <span className={styles.label}>Price</span>
-              <span className={styles.value}>{`${props.pricePerMonth}`}</span>
-              {props.discountFigure != null && (
+              <span
+                className={styles.value}
+              >{`${props.data.pricePerMonth}`}</span>
+              {props.data.discountFigure != null && props.isAnnualBilling ? (
                 <span
-                  className={style.value}
-                >{`(${props.discountFigure})`}</span>
-              )}
+                  className={styles.value}
+                >{`(discounted ${props.data.discountFigure})`}</span>
+              ) : null}
             </li>
           )}
           <li className={styles.singleItem}>
             <span className={styles.label}>Renew Date</span>
-            <span className={styles.value}>{props.renewDate}</span>
+            <span className={styles.value}>{props.data.renewDate}</span>
           </li>
 
           <Divider />
@@ -116,7 +132,7 @@ const OrderSummary = (props: OrderSummaryProps) => {
               Billing
             </span>
             <span className={[styles.label, styles.bolderText].join(" ")}>
-              {props.totalAmount}
+              {props.data.totalAmount}
             </span>
           </li>
         </ul>

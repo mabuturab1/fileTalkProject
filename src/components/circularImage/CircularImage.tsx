@@ -1,13 +1,19 @@
 import React from "react";
 import styles from "./CircularImage.module.scss";
+import ReactAvatarEditor from "react-avatar-editor";
 interface CircularImageProps {
   width?: string;
   height?: string;
-  src?: string;
+  src?: string | File;
   text?: string;
 }
 const circularImage = (props: CircularImageProps) => {
   let style: { [key: string]: any } = {};
+  let canvasStyles = {
+    width: "100%",
+    height: "100%",
+    borderRadius: "50%",
+  };
   if (props.width != null)
     style = {
       ...style,
@@ -19,12 +25,13 @@ const circularImage = (props: CircularImageProps) => {
   }
   if (props.src != null)
     return (
-      <img
-        className={styles.circularImageStyle}
-        style={style}
-        src={props.src != null ? props.src : ""}
-        alt="User"
-      />
+      <ReactAvatarEditor image={props.src} style={canvasStyles} />
+      // <img
+      //   className={styles.circularImageStyle}
+      //   style={style}
+      //   src={props.src != null ? props.src : ""}
+      //   alt="User"
+      // />
     );
   else
     return (

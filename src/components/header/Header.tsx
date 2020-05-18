@@ -7,7 +7,7 @@ import { routes } from "../../interfaces/routes";
 interface HeaderProps {
   userName?: string;
   companyName: string;
-  profileImage: string;
+  profileImage: string | File;
 }
 const myheader = (props: HeaderProps) => {
   return (

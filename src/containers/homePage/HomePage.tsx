@@ -9,8 +9,9 @@ import RoomListPage from "../roomListPage/RoomListPage";
 import SubscriptionContext, {
   CurrentPackage,
 } from "../../context/subscriptionContext";
+import UserDataContext from "../../context/userDataContext";
 import SubscriptionPage from "../subscriptionPackagePage/SubscriptionPackagePage";
-
+import ProfileImage from "../../assets/images/ProfileImage.png";
 import AccountPage from "../accountsPage/AccountsPage";
 
 import { Switch, Route, Redirect, useLocation } from "react-router-dom";
@@ -23,6 +24,7 @@ const HomePage = (props: any) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [annualBilling, setAnnualBilling] = useState(false);
   const [currentPackage, setCurrentPackage] = useState(CurrentPackage.Free);
+  const [userImage, setUserImage] = useState<string | File>(ProfileImage);
   const changeAnnualBilling = (annualBilling: boolean) => {
     setAnnualBilling(annualBilling);
   };
@@ -40,62 +42,72 @@ const HomePage = (props: any) => {
   const onModalClose = () => {
     setModalOpen(false);
   };
+  const setImageSrc = (imageSrc: string | File) => {
+    setUserImage(imageSrc);
+  };
   return (
-    <SubscriptionContext.Provider
+    <UserDataContext.Provider
       value={{
-        billingAnually: annualBilling,
-        defaultPackage: currentPackage,
-
-        isAnnualBilling: changeAnnualBilling,
-        changeCurrentPackage: changeCurrentPackage,
+        imageSrc: userImage,
+        setImageSrc: setImageSrc,
       }}
     >
-      <React.Fragment>
-        {modalOpen ? (
-          <SettingsPage open={modalOpen} onClose={onModalClose} />
-        ) : null}
+      <SubscriptionContext.Provider
+        value={{
+          billingAnually: annualBilling,
+          defaultPackage: currentPackage,
 
-        <div className={styles.wrapper}>
-          <div className={styles.header}>
-            <Header
-              companyName={"Filetalk"}
-              profileImage={userImage}
-              userName={"Francisco Alexander"}
-            />
-          </div>
-          <div className={styles.content}>
-            {/* <div className={styles.menu}> */}
-            <div className={styles.menuList}>
-              <Menu
-                activeItem={modalOpen ? "Settings" : inputState}
-                items={["Rooms", "Settings"]}
-                toLink={[routes.roomListPage, routes.mainPage]}
-                itemClicked={menuItemClicked}
+          isAnnualBilling: changeAnnualBilling,
+          changeCurrentPackage: changeCurrentPackage,
+        }}
+      >
+        <React.Fragment>
+          {modalOpen ? (
+            <SettingsPage open={modalOpen} onClose={onModalClose} />
+          ) : null}
+
+          <div className={styles.wrapper}>
+            <div className={styles.header}>
+              <Header
+                companyName={"Filetalk"}
+                profileImage={userImage}
+                userName={"Francisco Alexander"}
               />
             </div>
+            <div className={styles.content}>
+              {/* <div className={styles.menu}> */}
+              <div className={styles.menuList}>
+                <Menu
+                  activeItem={modalOpen ? "Settings" : inputState}
+                  items={["Rooms", "Settings"]}
+                  toLink={[routes.roomListPage, routes.mainPage]}
+                  itemClicked={menuItemClicked}
+                />
+              </div>
 
-            <div className={styles.pageWrapper}>
-              <Switch>
-                <Route path={routes.roomListPage}>
-                  <RoomListPage />
-                </Route>
+              <div className={styles.pageWrapper}>
+                <Switch>
+                  <Route path={routes.roomListPage}>
+                    <RoomListPage />
+                  </Route>
 
-                <Route path={routes.accountPage}>
-                  <AccountPage />
-                </Route>
-                <Route path={routes.welcomePage}>
-                  <Welcome
-                    titleText={"Start Filetalk"}
-                    captionLink={"Start with new file talk"}
-                  />
-                </Route>
-                <Redirect from="/" to={routes.welcomePage} />
-              </Switch>
+                  <Route path={routes.accountPage}>
+                    <AccountPage />
+                  </Route>
+                  <Route path={routes.welcomePage}>
+                    <Welcome
+                      titleText={"Start Filetalk"}
+                      captionLink={"Start with new file talk"}
+                    />
+                  </Route>
+                  <Redirect from="/" to={routes.welcomePage} />
+                </Switch>
+              </div>
             </div>
           </div>
-        </div>
-      </React.Fragment>
-    </SubscriptionContext.Provider>
+        </React.Fragment>
+      </SubscriptionContext.Provider>
+    </UserDataContext.Provider>
   );
 };
 export default HomePage;

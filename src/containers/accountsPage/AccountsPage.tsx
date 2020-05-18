@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import "./AccountsPage.scss";
 import AccountSummary from "../../components/accountSummary/AccountSummary";
 import { Tab, TabProps } from "semantic-ui-react";
@@ -8,16 +8,17 @@ import BillingPage from "../billingPage/BillingPage";
 import Button from "../../components/input/button/Button";
 import { Link } from "react-router-dom";
 import { routes } from "../../interfaces/routes";
+import UserDataContext from "../../context/userDataContext";
 
 const AccountPage = (props: any) => {
   const [activeTab, setActiveTab] = useState<number | string | undefined>(0);
-
+  const userDataContext = useContext(UserDataContext);
   const panes = [
     {
       menuItem: "Account Summary",
       render: () => (
         <Tab.Pane attached={false}>
-          <AccountSummary src={profileImage} />
+          <AccountSummary src={userDataContext.imageSrc} />
         </Tab.Pane>
       ),
     },

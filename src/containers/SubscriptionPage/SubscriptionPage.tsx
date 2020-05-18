@@ -16,6 +16,7 @@ import SubscriptionContext, {
 } from "../../context/subscriptionContext";
 import OrderSummary, {
   OrderSummaryProps,
+  OrderSummaryData,
 } from "../../components/orderSummary/OrderSummary";
 import { Modal } from "semantic-ui-react";
 import OrderSubscriptionPage from "../orderSubscriptionPage/OrderSubscriptionPage";
@@ -27,7 +28,7 @@ interface SubscriptionPageProps {
 const SubscriptionPage = (props: SubscriptionPageProps) => {
   const [showCurrentPlan, setCurrentPlan] = useState<boolean>(false);
   const [showOrderDetails, setOrderDetails] = useState(false);
-  const [prevSubscriptionStatus, setPrevSubscriptionStatus] = useState({
+  const [tempSubscriptionStatus, setTempSubscriptionStatus] = useState({
     billingAnnually: false,
     currentPackage: CurrentPackage.Free,
   });
@@ -35,9 +36,9 @@ const SubscriptionPage = (props: SubscriptionPageProps) => {
   const subsContext = useContext(SubscriptionContext);
   let monthlyPrice = 14;
   let yearlyPrice = 9;
+
   const getSubscriptionDetails = (): SubscriptionItem[] => {
     let billingRate = subsContext.billingAnually ? yearlyPrice : monthlyPrice;
-    console.log("billing rate is", billingRate);
     let tempSubsItem = subscriptionItems.slice();
     let premiumItem = { ...tempSubsItem[1] };
     premiumItem.header.monthlyPrice.text = getMonthPaymentText(billingRate);
@@ -50,20 +51,11 @@ const SubscriptionPage = (props: SubscriptionPageProps) => {
   };
 
   const toggleOrderDetailsDialog = (val: boolean) => {
-    if (val) saveCurrentSubscriptionState();
-    else getBackOriginalSubscriptionState();
+    // if (val) saveCurrentSubscriptionState();
+    // else getBackOriginalSubscriptionState();
     setOrderDetails(val);
   };
-  const saveCurrentSubscriptionState = () => {
-    setPrevSubscriptionStatus({
-      billingAnnually: subsContext.billingAnually,
-      currentPackage: subsContext.defaultPackage,
-    });
-  };
-  const getBackOriginalSubscriptionState = () => {
-    subsContext.isAnnualBilling(prevSubscriptionStatus.billingAnnually);
-    subsContext.changeCurrentPackage(prevSubscriptionStatus.currentPackage);
-  };
+
   const getModal = (wrappedComponet: any) => {
     return (
       <SemanticModal
@@ -76,13 +68,16 @@ const SubscriptionPage = (props: SubscriptionPageProps) => {
   };
 
   const changePlan = (val: CurrentPackage) => {
-    let prevState = subsContext.defaultPackage;
-    if (showCurrentPlan) {
-      setOrderDetails(true);
-      return;
-    }
-    subsContext.changeCurrentPackage(val);
-    setOrderDetails(true);
+    // if (showCurrentPlan) {
+    //   setOrderDetails(true);
+    //   return;
+    // }
+    // subsContext.changeCurrentPackage(val);
+    if (val == subsContext.defaultPackage) return;
+    let newState = { ...tempSubscriptionStatus };
+    newState.currentPackage = val;
+    setTempSubscriptionStatus(newState);
+    toggleOrderDetailsDialog(true);
   };
 
   const getCurrentPlan = () => {
@@ -109,41 +104,53 @@ const SubscriptionPage = (props: SubscriptionPageProps) => {
     return currentplan;
   };
 
-  const getOrderSummary = () => {
-    let nextDateInc = subsContext.billingAnually
+  const getOrderSummary = (annualSubscription: boolean) => {
+    let nextDateInc = annualSubscription
       ? moment().add(1, "years")
       : moment().add(1, "months");
-    let currentplan: OrderSummaryProps = {
+    let currentplan: OrderSummaryData = {
       plan: "Free",
       totalAmount: "0$",
       startingDate: "Immediatey",
       renewDate: nextDateInc.format("MMMM-DD,YYYY"),
       pricePerMonth: "$0",
     };
-    if (subsContext.billingAnually) {
+    if (annualSubscription) {
       currentplan.plan = "Personal annual subscription plan";
-      currentplan.discountFigure =
-        Math.round(
-          (100 * (monthlyPrice - yearlyPrice)) / monthlyPrice
-        ).toString() + " %";
     } else currentplan.plan = "Presonal monthly subscription plan";
-    if (subsContext.defaultPackage == CurrentPackage.Premium) {
+    if (tempSubscriptionStatus.currentPackage == CurrentPackage.Premium) {
       let data = getSubscriptionDetails()[1];
       currentplan.totalAmount = `\$${
-        subsContext.billingAnually ? yearlyPrice * 12 : monthlyPrice
+        annualSubscription ? yearlyPrice * 12 : monthlyPrice
       }`;
       currentplan.pricePerMonth = `\$${
-        subsContext.billingAnually ? yearlyPrice : monthlyPrice
+        annualSubscription ? yearlyPrice : monthlyPrice
       }`;
     }
+    currentplan.discountFigure =
+      Math.round(
+        (100 * (monthlyPrice - yearlyPrice)) / monthlyPrice
+      ).toString() + " %";
     return currentplan;
   };
-  const onPaid = () => {
+  const onPaid = (annualBilling: boolean) => {
+    console.log("annual billing in subscription page is", annualBilling);
+    updateAppState(annualBilling);
     setCurrentPlan(true);
     setOrderDetails(false);
   };
-  const onChangePlan = () => {
+  const onChangePlan = (annualBilling: boolean) => {
+    updateAppState(annualBilling);
     setOrderDetails(false);
+  };
+  const updateAppState = (annualBilling: boolean) => {
+    setTempSubscriptionStatus({
+      billingAnnually: annualBilling,
+      currentPackage: tempSubscriptionStatus.currentPackage,
+    });
+    console.log("updating state", tempSubscriptionStatus);
+    subsContext.isAnnualBilling(annualBilling);
+    subsContext.changeCurrentPackage(tempSubscriptionStatus.currentPackage);
   };
   const onCancelPlan = () => {
     setOrderDetails(false);
@@ -154,12 +161,15 @@ const SubscriptionPage = (props: SubscriptionPageProps) => {
       {showOrderDetails
         ? getModal(
             <OrderSubscriptionPage
-              orderSummaryData={getOrderSummary()}
+              getOrderSummaryData={(annualSubscription: boolean) =>
+                getOrderSummary(annualSubscription)
+              }
               onClose={() => toggleOrderDetailsDialog(false)}
               onPaid={onPaid}
               isAlreadySet={showCurrentPlan}
               onChangePlan={onChangePlan}
               onCancelPlan={onCancelPlan}
+              currentPacakge={tempSubscriptionStatus.currentPackage}
             />
           )
         : null}
