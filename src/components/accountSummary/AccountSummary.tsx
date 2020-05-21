@@ -9,9 +9,12 @@ import FileInput from "../fileInput/FileInput";
 import { Modal } from "semantic-ui-react";
 import ReactAvatarEditor from "react-avatar-editor";
 import EditProfile from "../editProfile/EditProfile";
-import UserDataContext from "../../context/userDataContext";
+import UserDataContext, { UserInfo } from "../../context/userDataContext";
+import SemanticModal from "../semanticModal/SemanticModal";
+import ChangePhoto from "../changePhoto/ChangePhoto";
+import AuthContext from "../../context/authContext";
+
 interface AccountSummaryProps {
-  src: string | File;
   userName?: string;
   userAddress?: string;
   date?: string;
@@ -23,51 +26,57 @@ interface AccountSummaryProps {
   onClose?: () => any;
 }
 const AccountSummary = (props: AccountSummaryProps) => {
+  const [showEditProfile, setEditProfile] = useState(false);
   const [showEditPhoto, setEditPhoto] = useState(false);
-  const [selectedImage, setSelectedFileImage] = useState<File | string>(
-    props.src
-  );
 
   const userDataContext = useContext(UserDataContext);
-  console.log(props.src);
+  const authContext = useContext(AuthContext);
   const handleChange = (event: string) => {
     if (event === "edit profile") {
-      setEditPhoto(true);
+      setEditProfile(true);
       console.log("set edit photo");
     }
   };
   const onFileSelect = (file: any) => {
     console.log(file);
 
-    userDataContext.setImageSrc(file.path);
+    userDataContext.setImageSrc(URL.createObjectURL(file));
+  };
+  const saveUserData = (userData: UserInfo) => {
+    userDataContext.setUserInfo(userData);
+    setEditProfile(false);
   };
   return (
     <div className={styles.accountSummaryWrapper}>
+      {showEditProfile ? (
+        <SemanticModal size="small" style={{ backgroundColor: "white" }}>
+          <EditProfile
+            onCancel={() => setEditProfile(false)}
+            onSave={saveUserData}
+          />
+        </SemanticModal>
+      ) : null}
       {showEditPhoto ? (
-        <Modal
-          open={true}
-          basic
-          size="small"
-          style={{ backgroundColor: "white" }}
-          centered={true}
-        >
-          <Modal.Content>
-            <EditProfile onCancel={() => setEditPhoto(false)} />
-          </Modal.Content>
-        </Modal>
+        <SemanticModal size="small" style={{ backgroundColor: "white" }}>
+          <ChangePhoto
+            onClose={() => setEditPhoto(false)}
+            imageSrc={userDataContext.imageSrc}
+          />
+        </SemanticModal>
       ) : null}
       <div className={styles.userWrapper}>
         <h6 className={styles.titleText}>Profile</h6>
         <div className={styles.accountInfo}>
           <div className={styles.personalInfo}>
-            <ReactAvatarEditor
-              width={150}
-              height={150}
-              border={0}
-              image={props.src}
+            <img
+              className={styles.image}
+              src={userDataContext.imageSrc}
+              alt="user"
             />
             <div className={styles.personalDetailsWrapper}>
-              <h6 className={styles.name}>Franscisco Alexander</h6>
+              <h6
+                className={styles.name}
+              >{`${userDataContext.userData.firstName} ${userDataContext.userData.lastName}`}</h6>
               <h6 className={styles.place}>Los Angelas USA</h6>
               <h6 className={styles.date}>After noon time</h6>
             </div>
@@ -79,14 +88,20 @@ const AccountSummary = (props: AccountSummaryProps) => {
             >
               Edit Profile
             </p>
-            <FileInput
-              onFileSelect={onFileSelect}
-              children={
-                <p className={styles.personalInfoButton}>Change Photo</p>
-              }
-            />
 
-            <p className={styles.personalInfoButton}>Logout</p>
+            <p
+              className={styles.personalInfoButton}
+              onClick={() => setEditPhoto(true)}
+            >
+              Change Photo
+            </p>
+
+            <p
+              className={styles.personalInfoButton}
+              onClick={() => authContext.setAuthenticated(false)}
+            >
+              Logout
+            </p>
           </div>
         </div>
       </div>

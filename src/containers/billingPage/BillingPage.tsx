@@ -1,26 +1,63 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./BillingPage.module.scss";
 import BillingInformation from "../forms/billingInformation/BillingInformation";
 import CurrentPaymentMethod from "../../components/currentPaymentMethod/CurrentPaymentMethod";
 import visaPayment from "../../assets/images/Visa.png";
+import InvoicePage from "../invoicePage/InvoicePage";
+import { string } from "yup";
+export interface UserBillingInfo {
+  firstName: string;
+  lastName: string;
+  country: string;
+  vatId?: string;
+  billingAddress?: string;
+  countryName?: string;
+}
+export interface CardDetails {
+  cardNumber: string;
+  expiryDate: string;
+}
 interface BillingPageProps {
   onClose?: () => any;
 }
-const billingPage = (props: BillingPageProps) => {
+const BillingPage = (props: BillingPageProps) => {
+  const [billingUserData, setBillingUserData] = useState<UserBillingInfo>({
+    firstName: "Francisco",
+    lastName: "Alexander",
+    country: "",
+  });
+  const [cardDetails, setCardDetails] = useState<CardDetails>({
+    cardNumber: "123456783245",
+    expiryDate: "December 2023",
+  });
+  const saveUserBillingInfo = (userData: UserBillingInfo) => {
+    setBillingUserData(userData);
+  };
+  const saveUserCardDetails = (myCardDetails: CardDetails) => {
+    console.log("setting card details", myCardDetails);
+    setCardDetails(myCardDetails);
+  };
   return (
     <div className={styles.billingPageWraper}>
       <div className={styles.billingFormWrapper}>
-        <BillingInformation onClose={props.onClose} />
+        <BillingInformation
+          onClose={props.onClose}
+          onSave={saveUserBillingInfo}
+        />
       </div>
       <div className={styles.topMargin}>
         <CurrentPaymentMethod
-          cardNumber={"123456783245"}
-          cardHolderName={"Francisco Alexander"}
-          expiryDate={"December 2023"}
+          cardNumber={cardDetails.cardNumber}
+          cardHolderName={`${billingUserData.firstName} ${billingUserData.lastName}`}
+          expiryDate={cardDetails.expiryDate}
           src={visaPayment}
+          onSave={saveUserCardDetails}
         />
+      </div>
+      <div className={styles.topMargin}>
+        <InvoicePage />
       </div>
     </div>
   );
 };
-export default billingPage;
+export default BillingPage;

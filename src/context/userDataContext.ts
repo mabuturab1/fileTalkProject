@@ -1,10 +1,18 @@
 import React from "react";
+export interface UserInfo {
+  firstName: string;
+  lastName: string;
+}
 const value: {
-  imageSrc: string | File;
-  setImageSrc: (input: string | File) => any;
+  imageSrc: string;
+  userData: UserInfo;
+  setImageSrc: (input: string) => any;
+  setUserInfo: (data: UserInfo) => any;
 } = {
   imageSrc: "",
-  setImageSrc: (imageSrc: string | File) => {},
+  userData: { firstName: "", lastName: "" },
+  setImageSrc: (imageSrc: string) => {},
+  setUserInfo: (userData: UserInfo) => {},
 };
 const userDataContext = React.createContext(value);
 export default userDataContext;

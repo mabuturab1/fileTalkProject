@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import styles from "./Button.module.scss";
 import { Button, Icon, Loader } from "semantic-ui-react";
 
 interface ButtonProps {
@@ -10,18 +11,22 @@ interface ButtonProps {
   type?: string;
   icon?: any;
   color?: string;
+  style?: any;
   backgroundColor?: string;
+  hoverColor?: string;
   onClick?: (event: any, data: any) => any;
+
   showLoader?: boolean;
   isErrorText?: boolean;
 }
-const button = (props: ButtonProps) => {
+const MyButton = (props: ButtonProps) => {
   let style: { [key: string]: any } = {
     textAlign: "center",
   };
   let label = "";
   let iconObj = null;
 
+  const [mouseHover, setMouseHover] = useState(false);
   if (props.label != null) label = props.label;
   if (props.padding != null && props.padding.length > 1) {
     style = {
@@ -48,8 +53,12 @@ const button = (props: ButtonProps) => {
   if (props.showLoader) {
     label = "";
 
-    iconObj = <Loader active inline />;
+    iconObj = <Loader size="tiny" active inline />;
   }
+  style = {
+    ...style,
+    ...props.style,
+  };
   if (props.type === "primary")
     return (
       <Button onClick={props.onClick} style={style} primary>
@@ -74,12 +83,24 @@ const button = (props: ButtonProps) => {
       </Button>
     );
   }
+  const onHover = (val: boolean) => {
+    setMouseHover(val);
+  };
+  const getBackgroundColor = () => {
+    if (props.hoverColor != null && mouseHover) return props.hoverColor;
 
+    if (props.backgroundColor != null && !mouseHover)
+      return props.backgroundColor;
+
+    return undefined;
+  };
   return (
     <Button
       disabled={props.disabled}
       onClick={props.onClick}
-      style={style}
+      style={{ ...style, backgroundColor: getBackgroundColor() }}
+      onMouseEnter={() => onHover(true)}
+      onMouseLeave={() => onHover(false)}
       primary
     >
       {label}
@@ -87,4 +108,4 @@ const button = (props: ButtonProps) => {
     </Button>
   );
 };
-export default button;
+export default MyButton;

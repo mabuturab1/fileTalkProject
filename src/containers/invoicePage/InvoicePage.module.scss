@@ -1,4 +1,5 @@
 $text-color: #444444;
+
 .invoiceWrapper {
   display: flex;
   position: relative;
@@ -34,5 +35,11 @@ $text-color: #444444;
   .contentWrapper {
     width: 100%;
     margin-top: 1rem;
+  }
+  .titleText {
+    font-size: 1rem;
+    color: black;
+    text-align: left;
+    margin-bottom: 1rem;
   }
 }

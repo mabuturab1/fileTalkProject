@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./PaymentDetails.module.scss";
 import { Input, Icon, Form, Divider } from "semantic-ui-react";
 import Button from "../input/button/Button";
@@ -6,9 +6,11 @@ import Button from "../input/button/Button";
 import InputFormField from "../input/formField/FormField";
 import CountryList from "../countryList/CountryList";
 import HeaderText from "../headerText/HeaderText";
+import EditPaymentMethod from "../../components/editPaymentMethod/EditPaymentMethod";
 import { withFormik, FormikBag } from "formik";
 
 import * as Yup from "yup";
+import SemanticModal from "../semanticModal/SemanticModal";
 const PaymentDetails = ({
   values,
   touched,
@@ -82,7 +84,10 @@ const PaymentDetails = ({
             isInputFullWidth={true}
           />
           <p className={styles.cardSubtitles}>
-            Your credit card will be stored with out secure partner Stripe
+            Your credit card will be stored with out secure partner{" "}
+            <a target="_blank" href="https://stripe.com/">
+              Stripe
+            </a>
           </p>
         </div>
         <div className={styles.buttonWrapper}>

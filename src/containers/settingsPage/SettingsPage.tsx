@@ -5,7 +5,7 @@ import Menu from "../../components/menu/Menu";
 import { routes } from "../../interfaces/routes";
 
 import AccountSummary from "../../components/accountSummary/AccountSummary";
-import profileImage from "../../assets/images/ProfileImage.png";
+
 import StorageSummary from "../../components/storageSummary/StorageSummary";
 import SubscriptionPage from "../subscriptionPage/SubscriptionPage";
 // import Modal from "../../components/modal/Modal";
@@ -16,9 +16,10 @@ import SemanticModal from "../../components/semanticModal/SemanticModal";
 interface SettingsPageProps {
   onClose: () => any;
   open: boolean;
+  initScreen: string;
 }
 const SettingsPage = (props: SettingsPageProps) => {
-  const [menuItem, setMenuItem] = useState("Profile");
+  const [menuItem, setMenuItem] = useState(props.initScreen);
 
   const menuItemClicked = (item: string) => {
     setMenuItem(item);
@@ -27,13 +28,19 @@ const SettingsPage = (props: SettingsPageProps) => {
   const getPage = (pageName: string) => {
     switch (pageName) {
       case "Profile":
-        return <AccountSummary src={profileImage} />;
+        return <AccountSummary />;
       case "Storage":
-        return <StorageSummary />;
+        return (
+          <StorageSummary
+            changePlanButton={() => setMenuItem("Subscription")}
+          />
+        );
       case "Subscription":
         return <SubscriptionPage onClose={props.onClose} />;
       case "Billing":
         return <BillingPage onClose={props.onClose} />;
+      default:
+        return <AccountSummary />;
     }
   };
   return (

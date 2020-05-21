@@ -7,7 +7,8 @@ import { routes } from "../../interfaces/routes";
 interface HeaderProps {
   userName?: string;
   companyName: string;
-  profileImage: string | File;
+  profileImage: string;
+  upgradeNow: any;
 }
 const myheader = (props: HeaderProps) => {
   return (
@@ -20,15 +21,14 @@ const myheader = (props: HeaderProps) => {
         </div>
       </Link>
       <div className={styles.userDetails}>
-        <Link to={routes.subscriptionPage}>
-          <div className={styles.upgradeButton}>
-            <Button
-              type={"secondary"}
-              label={"Upgrade now"}
-              padding={["0.8rem", "4rem"]}
-            />
-          </div>
-        </Link>
+        <div className={styles.upgradeButton} onClick={props.upgradeNow}>
+          <Button
+            type={"secondary"}
+            label={"Upgrade now"}
+            padding={["0.8rem", "4rem"]}
+          />
+        </div>
+
         <p className={styles.userName}>
           {props.userName != null ? props.userName : "User"}
         </p>

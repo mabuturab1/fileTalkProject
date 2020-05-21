@@ -1,14 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./CurrentPaymentMethod.module.scss";
 import Button from "../input/button/Button";
+import { CardDetails } from "../../containers/billingPage/BillingPage";
+import SemanticModal from "../semanticModal/SemanticModal";
+import EditPaymentMethod from "../editPaymentMethod/EditPaymentMethod";
 interface CurrentPaymentMethodProps {
   cardNumber: string;
   src?: string;
   cardHolderName?: string;
   expiryDate?: string;
+  onSave: (cardDetails: CardDetails) => any;
 }
-const currentPaymentMethod = (props: CurrentPaymentMethodProps) => {
+const CurrentPaymentMethod = (props: CurrentPaymentMethodProps) => {
+  const [showPaymentDetails, setPaymentDetailsDialog] = useState(false);
   let cardNumber: string = props.cardNumber;
+  console.log("card number is", cardNumber);
   let cardNumberList = [];
   for (let i = 1; i < cardNumber.length - 3; i++) {
     let classes = [styles.cardDigit];
@@ -26,8 +32,29 @@ const currentPaymentMethod = (props: CurrentPaymentMethodProps) => {
       </span>
     );
   }
+  console.log(cardNumberList, cardNumberList.length);
+  const onPaymentMethodChanged = (creditCardNumber: string) => {
+    console.log("credit card number is", creditCardNumber);
+    props.onSave({
+      cardNumber: creditCardNumber,
+      expiryDate: "December 23, 2022",
+    });
+    setPaymentDetailsDialog(false);
+  };
   return (
     <div className={styles.paymentMethodWrapper}>
+      {showPaymentDetails ? (
+        <SemanticModal
+          size="small"
+          children={
+            <EditPaymentMethod
+              contentStyle={{ padding: " 0 10%" }}
+              onSave={onPaymentMethodChanged}
+              onClose={() => setPaymentDetailsDialog(false)}
+            />
+          }
+        />
+      ) : null}
       <h6 className={styles.title}>Payment Method</h6>
       <div className={styles.paymentDetailsWrapper}>
         <img
@@ -42,11 +69,14 @@ const currentPaymentMethod = (props: CurrentPaymentMethodProps) => {
             Expires on &nbsp;{props.expiryDate}
           </h6>
           <div className={styles.buttonWrapper}>
-            <Button label={"Change"} />
+            <Button
+              label={"Change"}
+              onClick={() => setPaymentDetailsDialog(true)}
+            />
           </div>
         </div>
       </div>
     </div>
   );
 };
-export default currentPaymentMethod;
+export default CurrentPaymentMethod;

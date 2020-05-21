@@ -10,12 +10,13 @@ interface formFieldProps {
   handleChange: any;
   value: string;
   error: string;
-  elementConfig: { label: string; placeholder: string };
+  elementConfig: { label?: string; placeholder: string; type?: string };
   name: string;
   touched: boolean;
   icon?: string;
   inputStyle?: any;
   labelStyle?: any;
+  errorStyle?: any;
   isInputFullWidth?: boolean;
 }
 const formField = (props: formFieldProps) => {
@@ -51,9 +52,11 @@ const formField = (props: formFieldProps) => {
   };
   return (
     <Form.Field inline>
-      <label className={styles.myLabel} style={labelStyle}>
-        {props.elementConfig.label}
-      </label>
+      {props.elementConfig.label != null ? (
+        <label className={styles.myLabel} style={labelStyle}>
+          {props.elementConfig.label}
+        </label>
+      ) : null}
       <div style={inputStyle} className={styles.inputWrapper}>
         <Input
           icon={props.icon != null ? props.icon : undefined}
@@ -62,10 +65,15 @@ const formField = (props: formFieldProps) => {
           name={props.name}
           onChange={props.handleChange}
           placeholder={props.elementConfig.placeholder}
+          type={
+            props.elementConfig.type != null ? props.elementConfig.type : "text"
+          }
           value={props.value}
         />
         {props.error && props.touched && (
-          <span className={styles.errorWrapper}>{props.error}</span>
+          <span className={styles.errorWrapper} style={props.errorStyle}>
+            {props.error}
+          </span>
         )}
       </div>
     </Form.Field>

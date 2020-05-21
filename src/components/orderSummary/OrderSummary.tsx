@@ -36,7 +36,7 @@ const OrderSummary = (props: OrderSummaryProps) => {
   };
   const subsContext = useContext(SubscriptionContext);
   const [showConfirmationDialog, setConfirmationDialog] = useState(false);
-
+  console.log("current package in order summary", props.currentPackage);
   const billedAnuallyChanged = () => {
     let prevState = props.isAnnualBilling;
     let newState = !prevState;
@@ -44,7 +44,8 @@ const OrderSummary = (props: OrderSummaryProps) => {
     props.billingStatusChanged(newState);
   };
   const getDiscount = () => {
-    return props.isAlreadySet ||
+    return (props.isAlreadySet &&
+      props.currentPackage == CurrentPackage.Premium) ||
       (props.isAnnualBilling &&
         props.currentPackage == CurrentPackage.Premium &&
         props.data.discountFigure != null)
@@ -114,7 +115,9 @@ const OrderSummary = (props: OrderSummaryProps) => {
               <span
                 className={styles.value}
               >{`${props.data.pricePerMonth}`}</span>
-              {props.data.discountFigure != null && props.isAnnualBilling ? (
+              {props.data.discountFigure != null &&
+              props.isAnnualBilling &&
+              props.currentPackage == CurrentPackage.Premium ? (
                 <span
                   className={styles.value}
                 >{`(discounted ${props.data.discountFigure})`}</span>

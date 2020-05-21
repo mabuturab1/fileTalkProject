@@ -7,6 +7,7 @@ import Button from "../input/button/Button";
 
 interface StorageSummaryProps {
   onClose?: () => any;
+  changePlanButton: () => any;
 }
 const StorageSummary = (props: StorageSummaryProps) => {
   const [progressbarsList, setProgressbarsList] = useState<ProgressBarProps[]>([
@@ -40,13 +41,12 @@ const StorageSummary = (props: StorageSummaryProps) => {
       <div className={styles.storageDetailsWrapper}>
         {progressbars}
         <div className={styles.buttonWrapper}>
-          <Link to={routes.subscriptionPage}>
-            <Button
-              label={exceeded ? "Re-active plan" : "Upgrade"}
-              type={"secondary"}
-              padding={["0.8rem", "4rem"]}
-            />
-          </Link>
+          <Button
+            onClick={props.changePlanButton}
+            label={exceeded ? "Re-active plan" : "Upgrade"}
+            type={"secondary"}
+            padding={["0.8rem", "4rem"]}
+          />
         </div>
         {exceeded ? (
           <h6 className={styles.exceededText}>

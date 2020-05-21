@@ -18,7 +18,7 @@ const AccountPage = (props: any) => {
       menuItem: "Account Summary",
       render: () => (
         <Tab.Pane attached={false}>
-          <AccountSummary src={userDataContext.imageSrc} />
+          <AccountSummary />
         </Tab.Pane>
       ),
     },

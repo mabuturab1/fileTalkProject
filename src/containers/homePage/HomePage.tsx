@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Menu from "../../components/menu/Menu";
 import Header from "../../components/header/Header";
 import userImage from "../../assets/images/UserImage.png";
@@ -9,10 +9,11 @@ import RoomListPage from "../roomListPage/RoomListPage";
 import SubscriptionContext, {
   CurrentPackage,
 } from "../../context/subscriptionContext";
-import UserDataContext from "../../context/userDataContext";
+import UserDataContext, { UserInfo } from "../../context/userDataContext";
 import SubscriptionPage from "../subscriptionPackagePage/SubscriptionPackagePage";
 import ProfileImage from "../../assets/images/ProfileImage.png";
 import AccountPage from "../accountsPage/AccountsPage";
+import AuthContext from "../../context/authContext";
 
 import { Switch, Route, Redirect, useLocation } from "react-router-dom";
 
@@ -24,7 +25,14 @@ const HomePage = (props: any) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [annualBilling, setAnnualBilling] = useState(false);
   const [currentPackage, setCurrentPackage] = useState(CurrentPackage.Free);
-  const [userImage, setUserImage] = useState<string | File>(ProfileImage);
+  const [userImage, setUserImage] = useState<string>(ProfileImage);
+  const [initSettings, setInitSettings] = useState("Profile");
+  const authContext = useContext(AuthContext);
+
+  const [userData, setUserData] = useState<UserInfo>({
+    firstName: "Francisco ",
+    lastName: "Alexander",
+  });
   const changeAnnualBilling = (annualBilling: boolean) => {
     setAnnualBilling(annualBilling);
   };
@@ -42,14 +50,24 @@ const HomePage = (props: any) => {
   const onModalClose = () => {
     setModalOpen(false);
   };
-  const setImageSrc = (imageSrc: string | File) => {
+  const setImageSrc = (imageSrc: string) => {
     setUserImage(imageSrc);
   };
+  const setUserInfo = (userData: UserInfo) => {
+    setUserData(userData);
+  };
+  const upgradeNow = () => {
+    setInitSettings("Subscription");
+    setModalOpen(true);
+  };
+  if (!authContext.authenticated) return <Redirect to={routes.signIn} />;
   return (
     <UserDataContext.Provider
       value={{
         imageSrc: userImage,
+        userData: userData,
         setImageSrc: setImageSrc,
+        setUserInfo: setUserInfo,
       }}
     >
       <SubscriptionContext.Provider
@@ -63,7 +81,11 @@ const HomePage = (props: any) => {
       >
         <React.Fragment>
           {modalOpen ? (
-            <SettingsPage open={modalOpen} onClose={onModalClose} />
+            <SettingsPage
+              open={modalOpen}
+              onClose={onModalClose}
+              initScreen={initSettings}
+            />
           ) : null}
 
           <div className={styles.wrapper}>
@@ -71,7 +93,8 @@ const HomePage = (props: any) => {
               <Header
                 companyName={"Filetalk"}
                 profileImage={userImage}
-                userName={"Francisco Alexander"}
+                userName={`${userData.firstName} ${userData.lastName}`}
+                upgradeNow={upgradeNow}
               />
             </div>
             <div className={styles.content}>

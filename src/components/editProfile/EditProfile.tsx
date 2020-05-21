@@ -12,12 +12,12 @@ import {
 } from "../../containers/forms/billingInformation/utils";
 interface EditProfileProps {
   onCancel: () => any;
-  onSave?: () => {
+  onSave?: (data: {
     firstName: string;
     lastName: string;
     password: string;
     confirmPassword: string;
-  };
+  }) => any;
 }
 const EditProfile = ({
   values,
@@ -40,10 +40,12 @@ const EditProfile = ({
     password: {
       label: "Password",
       placeholder: "Please enter password",
+      type: "password",
     },
     confirmPassword: {
       label: "Confirm Password",
       placeholder: "Kindly confirm password",
+      type: "password",
     },
   };
   const onSave = (event: any, data: any) => {
@@ -125,18 +127,25 @@ const FormikEditProfile = withFormik({
       password: "",
       confirmPassword: "",
       onCancel: props.onCancel || null,
+      onSave: props.onSave,
     };
   },
   handleSubmit(values: any, { setErrors, setSubmitting }) {
     console.log(values);
-    if (values.password != values.confirmPassword)
+    if (values.password != values.confirmPassword) {
+      setSubmitting(false);
       setErrors({
         confirmPassword: "Password does not match",
       });
-    else
+    } else
       setTimeout(() => {
         setSubmitting(false);
-        values.onCancel();
+        values.onSave({
+          firstName: values.firstName,
+          lastName: values.lastName,
+          password: values.password,
+          confirmPassword: values.confirmPassword,
+        });
       }, 2000);
   },
   validationSchema: Yup.object().shape({

@@ -4,7 +4,7 @@ import ReactAvatarEditor from "react-avatar-editor";
 interface CircularImageProps {
   width?: string;
   height?: string;
-  src?: string | File;
+  src?: string;
   text?: string;
 }
 const circularImage = (props: CircularImageProps) => {
@@ -25,13 +25,12 @@ const circularImage = (props: CircularImageProps) => {
   }
   if (props.src != null)
     return (
-      <ReactAvatarEditor image={props.src} style={canvasStyles} />
-      // <img
-      //   className={styles.circularImageStyle}
-      //   style={style}
-      //   src={props.src != null ? props.src : ""}
-      //   alt="User"
-      // />
+      <img
+        className={styles.circularImageStyle}
+        style={style}
+        src={props.src != null ? props.src : ""}
+        alt="User"
+      />
     );
   else
     return (

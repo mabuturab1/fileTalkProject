@@ -1,5 +1,5 @@
 $border-color: #dddddd;
-$personl-details-color: black;
+$personal-details-color: black;
 $progress-bar-color: #555555;
 .accountSummaryWrapper {
   width: 100%;
@@ -11,7 +11,7 @@ $progress-bar-color: #555555;
   }
   .titleText {
     font-size: 1rem;
-    color: $personl-details-color;
+    color: $personal-details-color;
     text-align: left;
     margin-bottom: 1rem;
   }
@@ -30,7 +30,7 @@ $progress-bar-color: #555555;
       margin-left: 3rem;
     }
     .name {
-      color: $personl-details-color;
+      color: $personal-details-color;
       font-size: 1.2rem;
       font-weight: normal;
       margin-bottom: 0.5rem;
@@ -39,7 +39,7 @@ $progress-bar-color: #555555;
     }
     .place {
       font-family: 0.8rem;
-      color: $personl-details-color;
+      color: $personal-details-color;
       font-weight: normal;
       font-family: inherit;
       margin-bottom: 0.2rem;
@@ -47,7 +47,7 @@ $progress-bar-color: #555555;
     }
     .date {
       font-family: 0.8rem;
-      color: $personl-details-color;
+      color: $personal-details-color;
       font-weight: normal;
       font-family: inherit;
       opacity: 0.7;
@@ -57,7 +57,7 @@ $progress-bar-color: #555555;
     display: flex;
     flex-flow: column;
     width: 100%;
-    color: $personl-details-color;
+    color: $personal-details-color;
     .personalInfoButton {
       margin: 0;
       border-top: 1px solid $border-color;

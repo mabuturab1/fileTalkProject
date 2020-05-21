@@ -162,11 +162,12 @@ const FormikBillingInfo = withFormik({
       firstName: props.firstName || "",
       lastName: props.lastName || "",
       country: props.country || "",
-      vatId: "",
+      vatId: props.vatId || "",
       billingAddress: props.billingAddress || "",
       companyName: props.companyName || "",
       showDivider: props.showDivider || false,
       onClose: props.onClose,
+      onSave: props.onSave,
     };
   },
   handleSubmit(values: any, { setErrors, setSubmitting, resetForm }) {
@@ -174,6 +175,14 @@ const FormikBillingInfo = withFormik({
 
     setTimeout(() => {
       setSubmitting(false);
+      values.onSave({
+        firstName: values.firstName,
+        lastName: values.lastName,
+        country: values.country,
+        vatId: values.vatId,
+        billingAddress: values.billingAddress,
+        companyName: values.companyName,
+      });
       resetForm();
     }, 2000);
   },

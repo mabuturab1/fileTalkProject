@@ -12,15 +12,7 @@ const InvoicePage = (props: any) => {
   };
   return (
     <div className={styles.invoiceWrapper}>
-      <div className={styles.cancelButton}>
-        <Link to={routes.accountPage}>
-          <button className={styles.cancelButton}>Cancel</button>
-        </Link>
-      </div>
-      <div className={styles.header}>
-        <h4 className={styles.headerTitle}>Order Subscription</h4>
-      </div>
-      <Divider />
+      <h6 className={styles.titleText}>Invoices</h6>
       <div className={styles.contentWrapper}>
         <Table
           onPageChange={onPageChange}
