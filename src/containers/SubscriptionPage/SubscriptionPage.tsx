@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import styles from "./SubscriptionPage.module.scss";
 import CurrentPlanPage, {
   CurrentPlanProps,
@@ -14,11 +14,8 @@ import { SubscriptionItem } from "../../interfaces/interfaceList";
 import SubscriptionContext, {
   CurrentPackage,
 } from "../../context/subscriptionContext";
-import OrderSummary, {
-  OrderSummaryProps,
-  OrderSummaryData,
-} from "../../components/orderSummary/OrderSummary";
-import { Modal } from "semantic-ui-react";
+import { OrderSummaryData } from "../../components/orderSummary/OrderSummary";
+
 import OrderSubscriptionPage from "../orderSubscriptionPage/OrderSubscriptionPage";
 import SemanticModal from "../../components/semanticModal/SemanticModal";
 
@@ -73,7 +70,7 @@ const SubscriptionPage = (props: SubscriptionPageProps) => {
     //   return;
     // }
     // subsContext.changeCurrentPackage(val);
-    if (val == subsContext.defaultPackage) return;
+    if (val === subsContext.defaultPackage) return;
     let newState = { ...tempSubscriptionStatus };
     newState.currentPackage = val;
     setTempSubscriptionStatus(newState);
@@ -93,12 +90,12 @@ const SubscriptionPage = (props: SubscriptionPageProps) => {
     if (subsContext.billingAnually) {
       currentplan.planType = "Personal annual subscription plan";
     } else currentplan.planType = "Presonal monthly subscription plan";
-    if (subsContext.defaultPackage == CurrentPackage.Premium) {
+    if (subsContext.defaultPackage === CurrentPackage.Premium) {
       let data = getSubscriptionDetails()[1];
       if (data.header.annualPrice)
         currentplan.nextPayment = subsContext.billingAnually
-          ? `\$${yearlyPrice * 12}`
-          : `\$${monthlyPrice}`;
+          ? `$${yearlyPrice * 12}`
+          : `$${monthlyPrice}`;
     }
     currentplan.renewDate = nextDateInc.format("MMMM-DD,YYYY");
     return currentplan;
@@ -118,12 +115,11 @@ const SubscriptionPage = (props: SubscriptionPageProps) => {
     if (annualSubscription) {
       currentplan.plan = "Personal annual subscription plan";
     } else currentplan.plan = "Presonal monthly subscription plan";
-    if (tempSubscriptionStatus.currentPackage == CurrentPackage.Premium) {
-      let data = getSubscriptionDetails()[1];
-      currentplan.totalAmount = `\$${
+    if (tempSubscriptionStatus.currentPackage === CurrentPackage.Premium) {
+      currentplan.totalAmount = `$${
         annualSubscription ? yearlyPrice * 12 : monthlyPrice
       }`;
-      currentplan.pricePerMonth = `\$${
+      currentplan.pricePerMonth = `$${
         annualSubscription ? yearlyPrice : monthlyPrice
       }`;
     }
@@ -134,7 +130,6 @@ const SubscriptionPage = (props: SubscriptionPageProps) => {
     return currentplan;
   };
   const onPaid = (annualBilling: boolean) => {
-    console.log("annual billing in subscription page is", annualBilling);
     updateAppState(annualBilling);
     setCurrentPlan(true);
     setOrderDetails(false);
@@ -148,7 +143,7 @@ const SubscriptionPage = (props: SubscriptionPageProps) => {
       billingAnnually: annualBilling,
       currentPackage: tempSubscriptionStatus.currentPackage,
     });
-    console.log("updating state", tempSubscriptionStatus);
+
     subsContext.isAnnualBilling(annualBilling);
     subsContext.changeCurrentPackage(tempSubscriptionStatus.currentPackage);
   };
@@ -178,6 +173,7 @@ const SubscriptionPage = (props: SubscriptionPageProps) => {
         <div className={styles.currentPlan}>
           <CurrentPlanPage
             changePlan={() => toggleOrderDetailsDialog(true)}
+            reActivePlan={subsContext.defaultPackage === CurrentPackage.Premium}
             {...getCurrentPlan()}
           />
         </div>

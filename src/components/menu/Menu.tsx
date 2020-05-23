@@ -25,7 +25,6 @@ const menu = (props: MenuProps) => {
         </Link>
       );
     }
-    console.log(itemList);
   }
   return (
     <div className={styles.menuWrapper}>

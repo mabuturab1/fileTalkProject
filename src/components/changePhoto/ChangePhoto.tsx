@@ -20,10 +20,7 @@ const ChangePhoto = (props: ChangePhotoProps) => {
     imageSrc: props.imageSrc,
   });
 
-  var isChanged = false;
   const onFileSelect = (file: any) => {
-    console.log(file);
-    isChanged = true;
     setSelectedFile({
       isNew: true,
       imageSrc: file,
@@ -31,8 +28,7 @@ const ChangePhoto = (props: ChangePhotoProps) => {
   };
   const onSaveChanges = () => {
     if (selectedFile.isNew) {
-      console.log("setting file");
-      if (selectedFile.imageSrc != "")
+      if (selectedFile.imageSrc !== "")
         userDataContext.setImageSrc(URL.createObjectURL(selectedFile.imageSrc));
       else userDataContext.setImageSrc(BlankImage);
     }

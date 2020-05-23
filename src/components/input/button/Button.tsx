@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import styles from "./Button.module.scss";
-import { Button, Icon, Loader } from "semantic-ui-react";
+
+import { Button, Loader } from "semantic-ui-react";
 
 interface ButtonProps {
   disabled?: boolean;
@@ -53,7 +53,7 @@ const MyButton = (props: ButtonProps) => {
   if (props.showLoader) {
     label = "";
 
-    iconObj = <Loader size="tiny" active inline />;
+    iconObj = <Loader size="tiny" active inline inverted />;
   }
   style = {
     ...style,

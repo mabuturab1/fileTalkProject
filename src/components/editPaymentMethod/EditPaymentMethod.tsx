@@ -6,6 +6,7 @@ import PaymentMethod from "../../assets/images/PaymentMethod.png";
 import PaymentMethod1 from "../../assets/images/PaymentMethod1.png";
 import PaymentMethod2 from "../../assets/images/PaymentMethod2.png";
 import PaymentMethod3 from "../../assets/images/PaymentMethod3.png";
+
 import Button from "../input/button/Button";
 import { withFormik } from "formik";
 import * as Yup from "yup";
@@ -36,10 +37,6 @@ const editPaymentMethod = ({
     return list;
   };
 
-  let style: any = {
-    width: "100%",
-    height: "100%",
-  };
   const formData = {
     creditCardNumber: {
       label: "Credit or debit card",
@@ -57,7 +54,7 @@ const editPaymentMethod = ({
       <div className={styles.contentWrapper} style={values.contentStyle}>
         <div className={styles.cardDetails}>
           <InputFormField
-            icon={"credit card"}
+            customIcon={"icon-card-icon"}
             error={errors.creditCardNumber}
             elementConfig={formData.creditCardNumber}
             handleChange={handleChange}
@@ -68,7 +65,11 @@ const editPaymentMethod = ({
           />
           <p className={styles.cardSubtitles}>
             Your credit card will be stored with out secure partner{" "}
-            <a target="_blank" href="https://stripe.com/">
+            <a
+              target="_blank"
+              href="https://stripe.com/"
+              rel="noopener noreferrer"
+            >
               Stripe
             </a>
           </p>
@@ -109,12 +110,10 @@ const FormikEditPaymentInfo = withFormik({
     };
   },
   handleSubmit(values: any, { setErrors, setSubmitting, resetForm }) {
-    console.log(values);
-
     setTimeout(() => {
       if (values.creditCardNumber.length < 10) {
         setErrors({
-          paymentError: "Payment Error",
+          creditCardNumber: "Invalid card number",
         });
         setSubmitting(false);
       } else {

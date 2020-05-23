@@ -8,15 +8,6 @@ export interface ProgressBarProps {
   value: number;
 }
 const progressBar = (props: ProgressBarProps) => {
-  let style = {
-    color: "blue",
-  };
-  if (props.value > 1) {
-    style = {
-      ...style,
-      color: "red",
-    };
-  }
   return (
     <div>
       <div className={styles.wrapper}>

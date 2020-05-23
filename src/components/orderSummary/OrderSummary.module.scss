@@ -81,6 +81,9 @@ $text-color: #565656;
   justify-content: flex-end;
   cursor: pointer;
 }
+.singleButtonWrapper {
+  margin: 0 2px;
+}
 .cancelSubscriptionText {
   font-family: "Roboto", "sans-serif";
   font-size: 0.7rem;

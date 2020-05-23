@@ -12,6 +12,11 @@
     text-transform: none;
   }
   .dropdownWrapper {
-    width: 20rem;
+    min-width: 20rem;
+    max-width: 25rem;
+    flex: 1;
+  }
+  .maxWidthAuto {
+    max-width: none;
   }
 }

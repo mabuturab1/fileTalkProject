@@ -9,7 +9,7 @@ import AccountSummary from "../../components/accountSummary/AccountSummary";
 import StorageSummary from "../../components/storageSummary/StorageSummary";
 import SubscriptionPage from "../subscriptionPage/SubscriptionPage";
 // import Modal from "../../components/modal/Modal";
-import { Modal } from "semantic-ui-react";
+
 import BillingPage from "../billingPage/BillingPage";
 import SemanticModal from "../../components/semanticModal/SemanticModal";
 

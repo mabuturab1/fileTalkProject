@@ -34,3 +34,12 @@
   padding: 0 1rem;
   max-width: 25rem;
 }
+@media screen and (max-width: 992px) {
+  .subscriptionWrapper {
+    flex-flow: column;
+  }
+  .singleSubscription {
+    width: 100%;
+    margin: 1.5rem 0;
+  }
+}

@@ -1,16 +1,15 @@
-import React, { useState } from "react";
+import React from "react";
 import styles from "./PaymentDetails.module.scss";
-import { Input, Icon, Form, Divider } from "semantic-ui-react";
+import { Form, Divider } from "semantic-ui-react";
 import Button from "../input/button/Button";
 
 import InputFormField from "../input/formField/FormField";
 import CountryList from "../countryList/CountryList";
-import HeaderText from "../headerText/HeaderText";
-import EditPaymentMethod from "../../components/editPaymentMethod/EditPaymentMethod";
-import { withFormik, FormikBag } from "formik";
+
+import { withFormik } from "formik";
 
 import * as Yup from "yup";
-import SemanticModal from "../semanticModal/SemanticModal";
+
 const PaymentDetails = ({
   values,
   touched,
@@ -21,10 +20,6 @@ const PaymentDetails = ({
   handleSubmit,
   setFieldValue,
 }: any) => {
-  let style: any = {
-    width: "100%",
-    height: "100%",
-  };
   const formData = {
     fullName: {
       label: "Full Name",
@@ -54,8 +49,8 @@ const PaymentDetails = ({
               name={"fullName"}
               value={values.fullName}
               touched={touched.fullName}
-              inputStyle={{ width: "15rem" }}
               labelStyle={{ width: "5rem" }}
+              maxWidthAuto={true}
             />
           </div>
           <div className={styles.singleForm}>
@@ -66,15 +61,15 @@ const PaymentDetails = ({
               name={"country"}
               value={values.country}
               touched={touched.country}
-              inputStyle={{ width: "15rem" }}
               labelStyle={{ width: "5rem" }}
+              maxWidthAuto={true}
             />
           </div>
         </div>
         <Divider />
         <div className={styles.cardDetails}>
           <InputFormField
-            icon={"credit card"}
+            customIcon={"icon-card-icon"}
             error={errors.creditCardNumber}
             elementConfig={formData.creditCardNumber}
             handleChange={handleChange}
@@ -85,7 +80,11 @@ const PaymentDetails = ({
           />
           <p className={styles.cardSubtitles}>
             Your credit card will be stored with out secure partner{" "}
-            <a target="_blank" href="https://stripe.com/">
+            <a
+              target="_blank"
+              href="https://stripe.com/"
+              rel="noopener noreferrer"
+            >
               Stripe
             </a>
           </p>
@@ -131,8 +130,6 @@ const FormikPaymentBillingInfo = withFormik({
     };
   },
   handleSubmit(values: any, { setErrors, setSubmitting, resetForm }) {
-    console.log(values);
-
     setTimeout(() => {
       setSubmitting(false);
       if (values.creditCardNumber.length < 10) {

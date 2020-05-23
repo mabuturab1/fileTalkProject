@@ -2,14 +2,9 @@ import React, { SyntheticEvent } from "react";
 import styles from "./InvoicePage.module.scss";
 import Table from "../../components/paginatedTable/PaginatedTable";
 import { tableData } from "../../interfaces/dummyData";
-import { Link } from "react-router-dom";
-import { Divider } from "semantic-ui-react";
-import { routes } from "../../interfaces/routes";
+
 const InvoicePage = (props: any) => {
-  const onPageChange = (event: SyntheticEvent, data: object) => {
-    console.log(event);
-    console.log(data);
-  };
+  const onPageChange = (event: SyntheticEvent, data: object) => {};
   return (
     <div className={styles.invoiceWrapper}>
       <h6 className={styles.titleText}>Invoices</h6>

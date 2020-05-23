@@ -19,14 +19,14 @@ const SignUpPage = ({
 }: any) => {
   const formData = {
     email: {
-      placeholder: "Please enter email address",
+      placeholder: "Email address",
     },
     password: {
-      placeholder: "Please enter password",
+      placeholder: "Password",
       type: "password",
     },
     confirmPassword: {
-      placeholder: "Kindly confirm password",
+      placeholder: "Re-enter password",
       type: "password",
     },
   };
@@ -35,7 +35,7 @@ const SignUpPage = ({
       <Form>
         <div className={styles.contentWrapper}>
           <h3 className={styles.title}>Register Account</h3>
-          <div className={styles.signInForm}>
+          <div className={styles.signUpForm}>
             <div className={styles.singleInputWrapper}>
               <InputFormField
                 error={errors.email}
@@ -79,7 +79,9 @@ const SignUpPage = ({
                 backgroundColor={"#355BE4"}
                 hoverColor={"#6435c9"}
                 label={"Register"}
-                style={{ borderRadius: "1.5rem" }}
+                style={{ borderRadius: "2.5rem" }}
+                width={"8rem"}
+                height={"3.5rem"}
               />
             </div>
             <h4 className={styles.socialMediaTitle}>Or sign in with</h4>
@@ -111,8 +113,7 @@ const FormikSignUp = withFormik({
     };
   },
   handleSubmit(values: any, { setErrors, setSubmitting }) {
-    console.log(values);
-    if (values.password != values.confirmPassword) {
+    if (values.password !== values.confirmPassword) {
       setSubmitting(false);
       setErrors({
         confirmPassword: "Password does not match",

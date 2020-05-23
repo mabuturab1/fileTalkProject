@@ -1,13 +1,12 @@
 import React, { useContext, useState } from "react";
 import styles from "./OrderSubscriptionPage.module.scss";
-import BillingInformation from "../forms/billingInformation/BillingInformation";
+
 import OrderSummary, {
-  OrderSummaryProps,
   OrderSummaryData,
 } from "../../components/orderSummary/OrderSummary";
 import PaymentDetails from "../../components/paymentDetails/PaymentDetails";
 import HeaderText from "../../components/headerText/HeaderText";
-import { Divider } from "semantic-ui-react";
+
 import SubscriptionContext, {
   CurrentPackage,
 } from "../../context/subscriptionContext";
@@ -30,7 +29,6 @@ const OrderSubscriptionPage = (props: OrderPageProps) => {
     setOrderSummary(false);
   };
   const onPaid = () => {
-    console.log("annual billing in order subscription is", tempBillingAnnually);
     props.onPaid(tempBillingAnnually);
   };
 

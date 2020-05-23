@@ -1,7 +1,6 @@
 import React, { useState, useContext } from "react";
 import Menu from "../../components/menu/Menu";
 import Header from "../../components/header/Header";
-import userImage from "../../assets/images/UserImage.png";
 
 import styles from "./HomePage.module.scss";
 import Welcome from "../../components/welcome/Welcome";
@@ -10,9 +9,9 @@ import SubscriptionContext, {
   CurrentPackage,
 } from "../../context/subscriptionContext";
 import UserDataContext, { UserInfo } from "../../context/userDataContext";
-import SubscriptionPage from "../subscriptionPackagePage/SubscriptionPackagePage";
+
 import ProfileImage from "../../assets/images/ProfileImage.png";
-import AccountPage from "../accountsPage/AccountsPage";
+
 import AuthContext from "../../context/authContext";
 
 import { Switch, Route, Redirect, useLocation } from "react-router-dom";
@@ -41,7 +40,7 @@ const HomePage = (props: any) => {
   };
   const menuItemClicked = (item: string) => {
     setInputState(item);
-    console.log("item clicked is", item);
+
     if (item === "Settings") setModalOpen(true);
   };
   let location = useLocation();
@@ -114,9 +113,6 @@ const HomePage = (props: any) => {
                     <RoomListPage />
                   </Route>
 
-                  <Route path={routes.accountPage}>
-                    <AccountPage />
-                  </Route>
                   <Route path={routes.welcomePage}>
                     <Welcome
                       titleText={"Start Filetalk"}

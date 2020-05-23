@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./CircularImage.module.scss";
-import ReactAvatarEditor from "react-avatar-editor";
+
 interface CircularImageProps {
   width?: string;
   height?: string;
@@ -9,11 +9,7 @@ interface CircularImageProps {
 }
 const circularImage = (props: CircularImageProps) => {
   let style: { [key: string]: any } = {};
-  let canvasStyles = {
-    width: "100%",
-    height: "100%",
-    borderRadius: "50%",
-  };
+
   if (props.width != null)
     style = {
       ...style,

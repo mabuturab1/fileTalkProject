@@ -44,9 +44,7 @@ const SearchResultsPage = (props: any) => {
       ),
     },
   ];
-  const handleTabChange = (e: any, data: TabProps) => {
-    console.log(data.activeIndex === 1);
-  };
+  const handleTabChange = (e: any, data: TabProps) => {};
   const handleSearch = (value: string) => {
     setSearchResults(value);
   };

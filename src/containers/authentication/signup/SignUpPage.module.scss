@@ -14,12 +14,14 @@
     font-weight: 300;
     font-family: "Quicksand", "sans-serif";
   }
-  .signInForm {
-    width: 100%;
+  .signUpForm {
+    min-width: 20rem;
+    max-width: 25rem;
+    margin: 0 auto;
   }
   .singleInputWrapper {
     width: 100%;
-    margin: 1rem;
+    margin: 1rem 0;
   }
   .socialMediaTitle {
     color: white;

@@ -1,14 +1,13 @@
-import React, { useContext } from "react";
+import React from "react";
 import styles from "./SignInPage.module.scss";
 import { withFormik } from "formik";
 import * as Yup from "yup";
 import { Form } from "semantic-ui-react";
-import { ReactComponent as FacebookLogo } from "../../../assets/icons/facebook-icon.svg";
-import { ReactComponent as GoogleLogo } from "../../../assets/icons/google-icon.svg";
-import { Link, Redirect } from "react-router-dom";
+
+import { Link } from "react-router-dom";
 import InputFormField from "../../../components/input/formField/FormField";
 import Button from "../../../components/input/button/Button";
-import AuthContext from "../../../context/authContext";
+
 const SignInPage = ({
   values,
   touched,
@@ -20,10 +19,10 @@ const SignInPage = ({
 }: any) => {
   const formData = {
     email: {
-      placeholder: "Please enter email address",
+      placeholder: "Email address",
     },
     password: {
-      placeholder: "Please enter password",
+      placeholder: "Password",
       type: "password",
     },
   };
@@ -65,7 +64,9 @@ const SignInPage = ({
                 backgroundColor={"#355BE4"}
                 hoverColor={"#6435c9"}
                 label={"Sign in"}
-                style={{ borderRadius: "1.5rem" }}
+                width={"8rem"}
+                height={"3.5rem"}
+                style={{ borderRadius: "2.5rem" }}
               />
             </div>
             <Link to="/sign-up">
@@ -92,7 +93,7 @@ const FormikSignIn = withFormik({
   handleSubmit(values: any, { setErrors, setSubmitting }) {
     setTimeout(() => {
       setSubmitting(false);
-      if (values.password != "12345") {
+      if (values.password !== "12345") {
         setErrors({
           logInError: "Invalid username or password",
         });

@@ -1,15 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import styles from "./EditProfile.module.scss";
 import HeaderText from "../headerText/HeaderText";
 import InputFormField from "../input/formField/FormField";
-import { withFormik, FormikBag } from "formik";
+import { withFormik } from "formik";
 import { Form } from "semantic-ui-react";
 import * as Yup from "yup";
 import Button from "../input/button/Button";
-import {
-  getElementData,
-  FormField,
-} from "../../containers/forms/billingInformation/utils";
+
 interface EditProfileProps {
   onCancel: () => any;
   onSave?: (data: {
@@ -48,10 +45,7 @@ const EditProfile = ({
       type: "password",
     },
   };
-  const onSave = (event: any, data: any) => {
-    // props.onSave()
-    values.onCancel();
-  };
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.bottomBorder}>
@@ -112,6 +106,9 @@ const EditProfile = ({
               disabled={isSubmitting}
               onClick={handleSubmit}
               label={"Save Changes"}
+              showLoader={isSubmitting}
+              width={"10rem"}
+              height={"3rem"}
             />
           </div>
         </Form>
@@ -131,8 +128,7 @@ const FormikEditProfile = withFormik({
     };
   },
   handleSubmit(values: any, { setErrors, setSubmitting }) {
-    console.log(values);
-    if (values.password != values.confirmPassword) {
+    if (values.password !== values.confirmPassword) {
       setSubmitting(false);
       setErrors({
         confirmPassword: "Password does not match",

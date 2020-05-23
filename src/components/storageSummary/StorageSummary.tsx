@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import styles from "./StorageSummary.module.scss";
 import ProgressBar, { ProgressBarProps } from "../progressBar/ProgressBar";
-import { Link } from "react-router-dom";
-import { routes } from "../../interfaces/routes";
+
 import Button from "../input/button/Button";
 
 interface StorageSummaryProps {
@@ -10,7 +9,7 @@ interface StorageSummaryProps {
   changePlanButton: () => any;
 }
 const StorageSummary = (props: StorageSummaryProps) => {
-  const [progressbarsList, setProgressbarsList] = useState<ProgressBarProps[]>([
+  const [progressbarsList] = useState<ProgressBarProps[]>([
     {
       title: "Storage usages",
       totalValue: "100MB",
@@ -45,7 +44,12 @@ const StorageSummary = (props: StorageSummaryProps) => {
             onClick={props.changePlanButton}
             label={exceeded ? "Re-active plan" : "Upgrade"}
             type={"secondary"}
-            padding={["0.8rem", "4rem"]}
+            width={"14rem"}
+            height={"2.5rem"}
+            style={{
+              maxWidth: "14rem",
+              width: "100%",
+            }}
           />
         </div>
         {exceeded ? (

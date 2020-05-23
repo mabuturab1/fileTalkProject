@@ -1,13 +1,12 @@
 import React, { useState } from "react";
-import { getElementData, FormField } from "./utils";
+
 import { Form, Divider, Icon } from "semantic-ui-react";
 import InputFormField from "../../../components/input/formField/FormField";
-import { withFormik, FormikBag } from "formik";
+import { withFormik } from "formik";
 import Button from "../../../components/input/button/Button";
 import * as Yup from "yup";
 import styles from "./BillingInformation.module.scss";
 import CountryList from "../../../components/countryList/CountryList";
-var validator = require("validator");
 
 const BillingInformation = ({
   values,
@@ -150,6 +149,9 @@ const BillingInformation = ({
             disabled={isSubmitting}
             onClick={handleSubmit}
             label={"Save Changes"}
+            showLoader={isSubmitting}
+            width={"9.3rem"}
+            height={"2.6rem"}
           />
         </div>
       </div>
@@ -171,8 +173,6 @@ const FormikBillingInfo = withFormik({
     };
   },
   handleSubmit(values: any, { setErrors, setSubmitting, resetForm }) {
-    console.log(values);
-
     setTimeout(() => {
       setSubmitting(false);
       values.onSave({

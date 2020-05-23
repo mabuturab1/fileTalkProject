@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import styles from "./FileTalk.module.scss";
 import FileTalkHeader from "../../components/fileTalkHeader/fileTalkHeader";
 import profileImage from "../../assets/images/ProfileImage.png";
@@ -9,12 +9,18 @@ import UploadDetails from "../uploadDetails/UploadDetails";
 import FileViewPage from "../fileViewPage/FileViewPage";
 import { routes } from "../../interfaces/routes";
 import SearchResultsPage from "../searchResultsPage/SearchResultsPage";
+import UserDataContext from "../../context/userDataContext";
 const FileTalk = (props: any) => {
+  const userDataContext = useContext(UserDataContext);
   const getHeader = () => {
     return (
       <FileTalkHeader
-        src={profileImage}
-        userName={"Francisco Alexander"}
+        src={userDataContext.imageSrc}
+        userName={
+          userDataContext.userData.firstName +
+          " " +
+          userDataContext.userData.lastName
+        }
         userStatus={"Shared 3 files"}
       />
     );

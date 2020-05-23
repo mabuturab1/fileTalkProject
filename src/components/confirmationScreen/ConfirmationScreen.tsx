@@ -24,12 +24,16 @@ const ConfirmationScreen = (props: ConfirmationScreenProps) => {
       </div>
       <div className={styles.contentWrapper}>{list}</div>
       <div className={[styles.buttonWrapper, styles.alignStart].join(" ")}>
-        <Button onClick={props.onClose} label={"Cancel"} />
-        <Button
-          onClick={props.onConfirm}
-          label={"Confirm"}
-          backgroundColor={"#F17070"}
-        />
+        <div className={styles.singleButtonWrapper}>
+          <Button onClick={props.onClose} label={"Cancel"} />
+        </div>
+        <div className={styles.singleButtonWrapper}>
+          <Button
+            onClick={props.onConfirm}
+            label={"Confirm"}
+            backgroundColor={"#F17070"}
+          />
+        </div>
       </div>
     </div>
   );

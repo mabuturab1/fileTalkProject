@@ -1,11 +1,6 @@
 import React from "react";
 import styles from "./FormField.module.scss";
-import {
-  Form,
-  Input,
-  SemanticShorthandItem,
-  LabelProps,
-} from "semantic-ui-react";
+import { Form, Input, Icon } from "semantic-ui-react";
 interface formFieldProps {
   handleChange: any;
   value: string;
@@ -18,30 +13,27 @@ interface formFieldProps {
   labelStyle?: any;
   errorStyle?: any;
   isInputFullWidth?: boolean;
+  customIcon?: string;
+  maxWidthAuto?: boolean;
 }
 const formField = (props: formFieldProps) => {
   let labelStyle: any = {
     width: "10rem",
     color: "black",
   };
-  let inputStyle = {
-    width: "20rem",
+  let inputClasses = [styles.inputWrapper];
+  let inputStyle: any = {
+    width: "100%",
   };
   if (props.isInputFullWidth) {
-    inputStyle = { ...inputStyle, width: "100%" };
+    inputClasses.push(styles.fullWidth);
     labelStyle = {
       ...labelStyle,
       marginBottom: "0.3rem",
     };
   }
-  console.log(props.error);
-  let error: SemanticShorthandItem<LabelProps> = null;
-  if (props.touched && props.error) {
-    error = {
-      content: props.error,
-      pointing: "below",
-    };
-  }
+  if (props.maxWidthAuto) inputClasses.push(styles.autoMaxWidth);
+
   labelStyle = {
     ...labelStyle,
     ...props.labelStyle,
@@ -57,10 +49,18 @@ const formField = (props: formFieldProps) => {
           {props.elementConfig.label}
         </label>
       ) : null}
-      <div style={inputStyle} className={styles.inputWrapper}>
+      <div className={inputClasses.join(" ")}>
         <Input
-          icon={props.icon != null ? props.icon : undefined}
-          iconPosition={props.icon != null ? "left" : undefined}
+          icon={
+            props.icon != null ? (
+              props.icon
+            ) : props.customIcon != null ? (
+              <Icon className={props.customIcon} />
+            ) : undefined
+          }
+          iconPosition={
+            props.icon != null || props.customIcon != null ? "left" : undefined
+          }
           style={inputStyle}
           name={props.name}
           onChange={props.handleChange}

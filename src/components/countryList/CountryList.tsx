@@ -11,8 +11,10 @@ interface CountryListProps {
   touched: boolean;
   labelStyle?: any;
   inputStyle?: any;
+  maxWidthAuto?: boolean;
 }
 const countryList = (props: CountryListProps) => {
+  let classes = [styles.dropdownWrapper];
   let countryOptionsList: {
     key: string;
     value: string;
@@ -27,7 +29,9 @@ const countryList = (props: CountryListProps) => {
       text: val.name,
     });
   });
-
+  if (props.maxWidthAuto) {
+    classes.push(styles.maxWidthAuto);
+  }
   let labelStyle = {
     width: "10rem",
     color: "black",
@@ -41,7 +45,7 @@ const countryList = (props: CountryListProps) => {
       <label className={styles.labelStyle} style={labelStyle}>
         {props.elementConfig.label}
       </label>
-      <div className={styles.dropdownWrapper} style={props.inputStyle}>
+      <div className={classes.join(" ")} style={props.inputStyle}>
         <Dropdown
           placeholder={props.elementConfig.placeholder}
           name={props.name}

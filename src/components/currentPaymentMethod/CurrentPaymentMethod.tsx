@@ -14,7 +14,7 @@ interface CurrentPaymentMethodProps {
 const CurrentPaymentMethod = (props: CurrentPaymentMethodProps) => {
   const [showPaymentDetails, setPaymentDetailsDialog] = useState(false);
   let cardNumber: string = props.cardNumber;
-  console.log("card number is", cardNumber);
+
   let cardNumberList = [];
   for (let i = 1; i < cardNumber.length - 3; i++) {
     let classes = [styles.cardDigit];
@@ -32,9 +32,8 @@ const CurrentPaymentMethod = (props: CurrentPaymentMethodProps) => {
       </span>
     );
   }
-  console.log(cardNumberList, cardNumberList.length);
+
   const onPaymentMethodChanged = (creditCardNumber: string) => {
-    console.log("credit card number is", creditCardNumber);
     props.onSave({
       cardNumber: creditCardNumber,
       expiryDate: "December 23, 2022",
@@ -45,7 +44,7 @@ const CurrentPaymentMethod = (props: CurrentPaymentMethodProps) => {
     <div className={styles.paymentMethodWrapper}>
       {showPaymentDetails ? (
         <SemanticModal
-          size="small"
+          size="tiny"
           children={
             <EditPaymentMethod
               contentStyle={{ padding: " 0 10%" }}

@@ -1,13 +1,8 @@
 import React, { useState, useContext } from "react";
 import styles from "./AccountSummary.module.scss";
-import ProgressBar from "../progressBar/ProgressBar";
-import Button from "../input/button/Button";
-import { Link } from "react-router-dom";
-import { routes } from "../../interfaces/routes";
-import FileInput from "../fileInput/FileInput";
+
 // import Modal from "../modal/Modal";
-import { Modal } from "semantic-ui-react";
-import ReactAvatarEditor from "react-avatar-editor";
+
 import EditProfile from "../editProfile/EditProfile";
 import UserDataContext, { UserInfo } from "../../context/userDataContext";
 import SemanticModal from "../semanticModal/SemanticModal";
@@ -34,14 +29,9 @@ const AccountSummary = (props: AccountSummaryProps) => {
   const handleChange = (event: string) => {
     if (event === "edit profile") {
       setEditProfile(true);
-      console.log("set edit photo");
     }
   };
-  const onFileSelect = (file: any) => {
-    console.log(file);
 
-    userDataContext.setImageSrc(URL.createObjectURL(file));
-  };
   const saveUserData = (userData: UserInfo) => {
     userDataContext.setUserInfo(userData);
     setEditProfile(false);

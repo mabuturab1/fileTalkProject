@@ -4,7 +4,7 @@ import BillingInformation from "../forms/billingInformation/BillingInformation";
 import CurrentPaymentMethod from "../../components/currentPaymentMethod/CurrentPaymentMethod";
 import visaPayment from "../../assets/images/Visa.png";
 import InvoicePage from "../invoicePage/InvoicePage";
-import { string } from "yup";
+
 export interface UserBillingInfo {
   firstName: string;
   lastName: string;
@@ -34,7 +34,6 @@ const BillingPage = (props: BillingPageProps) => {
     setBillingUserData(userData);
   };
   const saveUserCardDetails = (myCardDetails: CardDetails) => {
-    console.log("setting card details", myCardDetails);
     setCardDetails(myCardDetails);
   };
   return (

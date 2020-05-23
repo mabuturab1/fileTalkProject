@@ -50,15 +50,13 @@ const Subscription = (props: SupscriptionDetailsProps) => {
       );
     }
   }
-  const changePackage = (plan: CurrentPackage) => {
-    subscriptionContext.changeCurrentPackage(props.value);
-  };
+
   return (
     <div className={styles.subscriptionWrapper}>
       <div className={styles.header}>{headerItems}</div>
       <div className={styles.subscriptionOffers}>
         <div className={styles.buttonWrapper}>
-          {subscriptionContext.defaultPackage != props.value ? (
+          {subscriptionContext.defaultPackage !== props.value ? (
             <Button
               label={
                 props.isAlreadySet ? props.isNotSubscribed : "Subscribe Now"

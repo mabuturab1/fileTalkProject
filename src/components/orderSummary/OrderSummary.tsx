@@ -1,14 +1,12 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import styles from "./OrderSummary.module.scss";
-import { Divider, Input, Icon } from "semantic-ui-react";
+import { Divider } from "semantic-ui-react";
 
 import Button from "../input/button/Button";
 import SemanticModal from "../semanticModal/SemanticModal";
 import ToggleButton from "../toggleButton/ToggleButton";
 import ConfirmationScreen from "../confirmationScreen/ConfirmationScreen";
-import SubscriptionContext, {
-  CurrentPackage,
-} from "../../context/subscriptionContext";
+import { CurrentPackage } from "../../context/subscriptionContext";
 export interface OrderSummaryData {
   plan?: string;
   startingDate?: string;
@@ -30,13 +28,8 @@ export interface OrderSummaryProps {
   contentStyle?: any;
 }
 const OrderSummary = (props: OrderSummaryProps) => {
-  let style: any = {
-    width: "100%",
-    height: "100%",
-  };
-  const subsContext = useContext(SubscriptionContext);
   const [showConfirmationDialog, setConfirmationDialog] = useState(false);
-  console.log("current package in order summary", props.currentPackage);
+
   const billedAnuallyChanged = () => {
     let prevState = props.isAnnualBilling;
     let newState = !prevState;
@@ -45,10 +38,10 @@ const OrderSummary = (props: OrderSummaryProps) => {
   };
   const getDiscount = () => {
     return (props.isAlreadySet &&
-      props.currentPackage == CurrentPackage.Premium) ||
+      props.currentPackage === CurrentPackage.Premium) ||
       (props.isAnnualBilling &&
-        props.currentPackage == CurrentPackage.Premium &&
-        props.data.discountFigure != null)
+        props.currentPackage === CurrentPackage.Premium &&
+        props.data.discountFigure !== null)
       ? `(${props.data.discountFigure} Discount)`
       : null;
   };
@@ -115,9 +108,9 @@ const OrderSummary = (props: OrderSummaryProps) => {
               <span
                 className={styles.value}
               >{`${props.data.pricePerMonth}`}</span>
-              {props.data.discountFigure != null &&
+              {props.data.discountFigure !== null &&
               props.isAnnualBilling &&
-              props.currentPackage == CurrentPackage.Premium ? (
+              props.currentPackage === CurrentPackage.Premium ? (
                 <span
                   className={styles.value}
                 >{`(discounted ${props.data.discountFigure})`}</span>
@@ -145,7 +138,7 @@ const OrderSummary = (props: OrderSummaryProps) => {
           className={styles.cancelSubscription}
           onClick={() => toggleConfirmationDialog(true)}
         >
-          <a className={styles.cancelSubscriptionText}>Cancel Subscription</a>
+          <p className={styles.cancelSubscriptionText}>Cancel Subscription</p>
         </div>
       ) : null}
       {!props.isAlreadySet ? (
@@ -154,7 +147,10 @@ const OrderSummary = (props: OrderSummaryProps) => {
         </div>
       ) : (
         <div className={[styles.buttonWrapper, styles.alignStart].join(" ")}>
-          <Button onClick={props.onClose} label={"Cancel"} />
+          <div className={styles.singleButtonWrapper}>
+            <Button onClick={props.onClose} label={"Cancel"} />
+          </div>
+          <div className={styles.singleButtonWrapper}></div>
           <Button
             onClick={onChangePlan}
             label={"Confirm"}

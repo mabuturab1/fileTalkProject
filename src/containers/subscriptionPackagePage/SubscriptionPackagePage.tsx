@@ -1,11 +1,8 @@
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import styles from "./SubscriptionPackagePage.module.scss";
-import { Checkbox } from "semantic-ui-react";
+
 import ToggleButton from "../../components/toggleButton/ToggleButton";
-import {
-  SubscriptionItem,
-  SubscrptionTextSize,
-} from "../../interfaces/interfaceList";
+import { SubscriptionItem } from "../../interfaces/interfaceList";
 import SubscriptionDetail from "../../components/subscriptionDetail/SubscriptionDetail";
 import SubscriptionContext, {
   CurrentPackage,

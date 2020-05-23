@@ -57,11 +57,11 @@ export const subscriptionItemsInit: SubscriptionItem[] = [
   },
 ];
 export const getMonthPaymentText = (amount: number) => {
-  return `\$${amount}`;
+  return `$${amount}`;
 };
 export const getYearlyPaymentText = (amount: number) => {
-  return `\$${amount} payment per year`;
+  return `$${amount} payment per year`;
 };
 export const getRoomsListText = (usedRoom: number, totalRoom: number) => {
-  return `\$${usedRoom} user / ${totalRoom} rooms`;
+  return `$${usedRoom} user / ${totalRoom} rooms`;
 };

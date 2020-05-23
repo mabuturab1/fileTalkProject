@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import { Dropdown } from "semantic-ui-react";
 import styles from "./Dropdown.module.scss";
 interface DropdownProps {

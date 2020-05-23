@@ -11,15 +11,20 @@ $progress-bar-color: #555555;
     width: 100%;
     display: flex;
     align-items: flex-start;
+    flex-wrap: wrap;
     .progressBar {
+      min-width: 10rem;
       width: 80%;
+      max-width: 40rem;
     }
     .progressBarLabel {
-      width: 20%;
+      flex: 1;
       text-align: left;
       margin: 0;
       padding: 0;
       font-size: 0.9rem;
+      min-width: 5rem;
+      margin-top: 5px;
       padding-left: 1.5rem;
     }
   }

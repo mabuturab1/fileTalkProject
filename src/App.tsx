@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 // import logo from "./logo.svg";
 import HomePage from "./containers/homePage/HomePage";
 import FileTalk from "./containers/fileTalk/FileTalk";
@@ -14,7 +14,7 @@ import {
 import OrderSubscriptionPage from "./containers/orderSubscriptionPage/OrderSubscriptionPage";
 import InvoicePage from "./containers/invoicePage/InvoicePage";
 import { routes } from "./interfaces/routes";
-import SettingsPage from "./containers/settingsPage/SettingsPage";
+
 import AuthContext from "./context/authContext";
 
 function App() {
