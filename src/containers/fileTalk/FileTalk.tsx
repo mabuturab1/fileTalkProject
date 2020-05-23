@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import styles from "./FileTalk.module.scss";
 import FileTalkHeader from "../../components/fileTalkHeader/fileTalkHeader";
-import profileImage from "../../assets/images/ProfileImage.png";
+
 import UploadScreenPage from "../uploadScreenPage/UploadScreenPage";
 import { Switch, Route, Redirect } from "react-router-dom";
 import { Icon } from "semantic-ui-react";
