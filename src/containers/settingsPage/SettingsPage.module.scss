@@ -16,7 +16,12 @@ $menu-width: 15%;
   .header {
     width: 100%;
 
+<<<<<<< HEAD
     height: 2rem;
+=======
+    display: flex;
+    flex: 0 0 32px;
+>>>>>>> ad488b69236624cb0165c2fcc1ae5bb1ab35c8d5
     border-bottom: 1px solid $border-color;
   }
   .content {
